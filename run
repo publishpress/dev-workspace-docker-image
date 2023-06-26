@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Run the terminal service.
+docker compose -f compose.yaml run --rm terminal "$@"
