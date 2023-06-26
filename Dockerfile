@@ -170,7 +170,14 @@ COPY root/.zshrc /root/.zshrc
 COPY php-conf.d/error-logging.ini /usr/local/etc/php/conf.d/error-logging.ini
 COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/php-cli.ini
 
-RUN chmod +x /scripts/checkdep /scripts/mergedep /scripts/parsejson /scripts/testsbootstrap /scripts/longpath /scripts/ppbuild /scripts/pptests
+RUN chmod +x \
+    /scripts/checkdep \
+    /scripts/mergedep \
+    /scripts/parsejson \
+    /scripts/testsbootstrap \
+    /scripts/longpath \
+    /scripts/ppbuild \
+    /scripts/pptests
 
 VOLUME /project
 
