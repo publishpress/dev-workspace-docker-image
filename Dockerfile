@@ -31,6 +31,11 @@ RUN set -ex; \
         curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
         echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     \
+    # Prepare for installing gh
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
+        chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+    \
     # Install dependencies
         apt-get update; \
         apt-get install -y \
@@ -46,6 +51,7 @@ RUN set -ex; \
             bash \
             coreutils \
             git \
+            gh \
             openssh-client \
             patch \
             subversion \
@@ -85,6 +91,7 @@ RUN set -ex; \
         sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.5/zsh-in-docker.sh)" -- \
             -t ys \
             -p git \
+            -p gh \
             -p asdf \
             -p ag \
             -p wp-cli \
