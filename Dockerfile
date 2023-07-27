@@ -52,6 +52,7 @@ RUN set -ex; \
             coreutils \
             git \
             gh \
+            iproute2 \
             openssh-client \
             patch \
             subversion \
