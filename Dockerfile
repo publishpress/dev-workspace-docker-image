@@ -184,12 +184,15 @@ COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/php-cli.ini
 
 RUN chmod +x \
     /scripts/checkdep \
+    /scripts/getip \
+    /scripts/ghlogin \
+    /scripts/longpath \
+    /scripts/longpath \
     /scripts/mergedep \
     /scripts/parsejson \
-    /scripts/testsbootstrap \
-    /scripts/longpath \
     /scripts/ppbuild \
-    /scripts/pptests
+    /scripts/pptests \
+    /scripts/testsbootstrap
 
 VOLUME /project
 
