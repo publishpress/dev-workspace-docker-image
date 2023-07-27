@@ -165,8 +165,8 @@ RUN set -ex; \
         mv wp-cli.phar /usr/local/bin/wp && \
     \
     # Create dirs
-        mkdir /project; \
-        mkdir /scripts; \
+        mkdir /project && \
+        mkdir /scripts && \
     \
     # Cleanup
         apt-get remove -y \
