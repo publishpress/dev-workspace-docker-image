@@ -4,6 +4,7 @@ FROM php:8.0-cli
 # Install dependencies
 ####################################################################################################
 
+ENV PROJECT_PATH=/project
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /root/.composer
 ENV COMPOSER_VERSION 2.5.8

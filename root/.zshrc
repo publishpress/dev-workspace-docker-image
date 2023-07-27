@@ -125,6 +125,8 @@ ${venv_info}\
 [%*] $exit_code
 %{$terminfo[bold]$fg[magenta]%}➜ %{$reset_color%}"
 
+alias proj="cd $PROJECT_PATH"
+
 # If GH auth file exists, login to gh command
 if [[ -f $PROJECT_PATH/dev-workspace/cache/gh-token.txt ]]; then
      GH_TOKEN=$(cat $PROJECT_PATH/dev-workspace/cache/gh-token.txt)
