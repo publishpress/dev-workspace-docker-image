@@ -10,7 +10,7 @@ ENV COMPOSER_VERSION 2.5.8
 ENV NODE_VERSION=14.19.3
 ENV NPM_VERSION=6.14.17
 ENV NVM_DIR=/root/.nvm
-ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/scripts:/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 ENV PLUGIN_NAME="Generic"
 ENV PLUGIN_TYPE="FREE"
 
