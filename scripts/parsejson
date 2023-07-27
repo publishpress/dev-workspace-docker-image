@@ -1,22 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-$path = $argv[1];
-$property = $argv[2];
-
 /**
- * Parse a json file and returns the content as a string.
+ * Parse a JSON file and return the content as an array.
  */
 function parseJson(string $jsonFilePath): array
 {
     $jsonContent = trim(file_get_contents($jsonFilePath));
-    $jsonContent = (array)json_decode($jsonContent);
+    $jsonContent = (array) json_decode($jsonContent);
 
     return $jsonContent;
 }
 
 /**
- * Return a property from an array
+ * Return a property from an array.
  */
 function getProperty(array $data, string $property): string
 {
@@ -29,22 +26,46 @@ function getProperty(array $data, string $property): string
         $value = $data[$property];
 
         if (is_object($value)) {
-            $value = (array)$value;
+            $value = (array) $value;
         }
 
         if (is_array($value)) {
-            if (! empty($nextProperties)) {
+            if (!empty($nextProperties)) {
                 $value = getProperty($value, $nextProperties);
             } else {
                 $value = implode(', ', $value);
             }
         }
 
-        $value = (string)$value;
+        $value = (string) $value;
     }
 
     return $value;
 }
 
-$jsonContent = parseJson($path, $property);
-echo getProperty($jsonContent, $property);
+// Check if required arguments are provided
+if ($argc !== 3) {
+    echo "Usage: php script.php <json_file_path> <property_path>\n";
+    exit(1);
+}
+
+// Get JSON file path and property path from command-line arguments
+$jsonFile = $argv[1];
+$property = $argv[2];
+
+// Check if the JSON file exists
+if (!file_exists($jsonFile)) {
+    echo "Error: JSON file not found: $jsonFile\n";
+    exit(1);
+}
+
+// Load the JSON content and extract the property value
+$jsonContent = parseJson($jsonFile);
+$propertyValue = getProperty($jsonContent, $property);
+
+// Display the property value or an error message if not found
+if ($propertyValue !== 'null') {
+    echo "$propertyValue";
+} else {
+    echo "Error: Property '$property' not found in the JSON file.\n";
+}
