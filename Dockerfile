@@ -95,7 +95,6 @@ RUN set -ex; \
             -p git \
             -p gh \
             -p asdf \
-            -p ag \
             -p wp-cli \
         ; \
     \
