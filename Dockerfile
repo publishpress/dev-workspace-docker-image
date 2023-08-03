@@ -75,6 +75,8 @@ RUN set -ex; \
             docker-compose \
             yarn \
             libpng-dev \
+            tmate \
+            magic-wormhole \
             ; \
     \
     # PHP Extensions
