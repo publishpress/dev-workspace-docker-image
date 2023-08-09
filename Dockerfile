@@ -4,7 +4,7 @@ FROM php:8.0-cli
 # Install dependencies
 ####################################################################################################
 
-ENV DEV_WORKSPACE_VERSION 2.0.2
+ENV DEV_WORKSPACE_VERSION 2.0.3
 ENV PROJECT_PATH=/project
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /root/.composer
@@ -191,12 +191,12 @@ RUN chmod +x \
     /scripts/getip \
     /scripts/ghlogin \
     /scripts/longpath \
-    /scripts/longpath \
     /scripts/mergedep \
     /scripts/parsejson \
     /scripts/ppbuild \
     /scripts/pptests \
-    /scripts/testsbootstrap
+    /scripts/testsbootstrap \
+    /scripts/version
 
 VOLUME /project
 
