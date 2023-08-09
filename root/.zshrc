@@ -82,7 +82,7 @@ elif [[ "$PLUGIN_TYPE" == "FREE" ]]; then
 fi
 
 export PROMPT="
-%{$bg[magenta]%}%{$fg[white]%} 🐧 $PLUGIN_NAME - Dev-Workspace %{$reset_color%} $COLOR%{$fg[black]%} $PLUGIN_TYPE %{$reset_color%}
+%{$bg[magenta]%}%{$fg[white]%} 🐧 Dev-Workspace %{$reset_color%} $COLOR%{$fg[black]%} $PLUGIN_NAME $PLUGIN_TYPE %{$reset_color%}
 %{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
 %(#,%{$bg[yellow]%}%{$fg[black]%}%n%{$reset_color%},%{$fg[cyan]%}%n) \
 %{$reset_color%}@ \
