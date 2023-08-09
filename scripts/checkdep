@@ -79,6 +79,6 @@ if ($allRequirementsPresent) {
     }
 
     echo "\n";
-    echo "Please add the missing requirements running `composer merge-dependencies` and run `composer update` again.\n";
+    echo "Please add the missing requirements running `composer fix:deps` and run `composer update` again.\n";
     exit(1);
 }
