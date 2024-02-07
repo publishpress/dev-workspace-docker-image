@@ -4,7 +4,7 @@ FROM php:8.0-cli
 # Install dependencies
 ####################################################################################################
 
-ENV DEV_WORKSPACE_VERSION 2.0.3
+ENV DEV_WORKSPACE_VERSION 3.0.0
 ENV PROJECT_PATH=/project
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /root/.composer
@@ -24,10 +24,16 @@ RUN set -ex; \
             apt-transport-https \
             ca-certificates \
             curl \
+            gnupg \
             gnupg-agent \
             software-properties-common && \
-        curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
-        add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
+        install -m 0755 -d /etc/apt/keyrings && \
+        curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+        chmod a+r /etc/apt/keyrings/docker.gpg && \
+        echo \
+          "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+          "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+            tee /etc/apt/sources.list.d/docker.list > /dev/null && \
     \
     # Prepare for installing yarn
         curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
@@ -71,12 +77,15 @@ RUN set -ex; \
             net-tools \
             default-mysql-client \
             bsdmainutils \
-            docker.io \
-            docker-compose \
             yarn \
             libpng-dev \
             tmate \
             magic-wormhole \
+            docker-ce \
+            docker-ce-cli \
+            containerd.io \
+            docker-buildx-plugin \
+            docker-compose-plugin \
             ; \
     \
     # PHP Extensions
@@ -151,13 +160,13 @@ RUN set -ex; \
             --location \
             --retry 3 \
             --output /tmp/nvm-install.sh \
-            --url https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh \
+            --url https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh \
             ; \
-        echo c6e6e30aa7fdba27a5e9b3d5b47cf5d93043b775f316e6aa2ee6981bcd3e074e88d35ed136bc050deb73e4db8047b4be86fb02a5b6bd83b8726fb068622072d9 /tmp/nvm-install.sh | sha512sum --strict --check ; \
-        bash /tmp/nvm-install.sh ; \
-        . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}; \
-        . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}; \
-        . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}; \
+        echo be675049552a27d529ef5565c73708e7b18018e9778b0ec184c98a296ea498d4d89fdf2ef10374bf115b23a95f3b37607c3a016919c04be130df99f92165fb02 /tmp/nvm-install.sh | sha512sum --strict --check ; \
+        bash /tmp/nvm-install.sh; \
+        . $NVM_DIR/nvm.sh && nvm install ${NODE_VERSION}; \
+        . $NVM_DIR/nvm.sh && nvm use v${NODE_VERSION}; \
+        . $NVM_DIR/nvm.sh && nvm alias default v${NODE_VERSION}; \
         node --version; \
         npm install -g npm@${NPM_VERSION}; \
         npm --version; \
@@ -167,6 +176,9 @@ RUN set -ex; \
         curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
         chmod +x wp-cli.phar && \
         mv wp-cli.phar /usr/local/bin/wp && \
+    \
+    # Install droxul, a Dropbox CLI client
+        npm i droxul --g && \
     \
     # Create dirs
         mkdir /project && \
@@ -193,8 +205,15 @@ RUN chmod +x \
     /scripts/longpath \
     /scripts/mergedep \
     /scripts/parsejson \
-    /scripts/ppbuild \
+    /scripts/pbuild \
+    /scripts/pdropbox \
+    /scripts/pfile \
+    /scripts/pfolder \
+    /scripts/pname \
     /scripts/pptests \
+    /scripts/pslug \
+    /scripts/pversion \
+    /scripts/pzipfile \
     /scripts/testsbootstrap \
     /scripts/version
 

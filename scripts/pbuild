@@ -4,60 +4,17 @@
 
 start_time=$(date +%s)
 
-script_version="1.3.1"
+script_version="1.4.0"
 
 command=${1}
 source_path=$(pwd)
 dist_path="${source_path}/dist"
 cols=$(( ${#TERM} ? $(tput cols) : 80 ))
 
-#######################################
-# Get the plugin name from composer.json file.
-# Globals:
-#   source_path
-# Returns:
-#   The plugin name.
-#######################################
-get_plugin_name() {
-    parsejson "${source_path}/composer.json" "extra.plugin-name"
-}
-plugin_name=$(get_plugin_name)
-
-#######################################
-# Get the plugin slug from composer.json file.
-# Globals:
-#   source_path
-# Returns:
-#   The plugin slug.
-#######################################
-get_plugin_slug() {
-    parsejson "${source_path}/composer.json" "extra.plugin-slug"
-}
-plugin_slug=$(get_plugin_slug)
-
-#######################################
-# Get the plugin folder from composer.json file.
-# Globals:
-#   source_path
-# Returns:
-#   The plugin folder.
-#######################################
-get_plugin_folder() {
-    parsejson "${source_path}/composer.json" "extra.plugin-folder"
-}
-plugin_folder=$(get_plugin_folder)
-
-#######################################
-# Get the plugin version from the main plugin file.
-# Returns:
-#   The plugin version.
-#######################################
-get_plugin_version() {
-    # TODO: Remove the hardcoded plugin slug
-    cat $plugin_slug.php | grep "* Version:" | sed 's/ //g' | awk -F: '{print $NF}'
-}
-plugin_version=$(get_plugin_version)
-
+plugin_name=$(pname ${source_path})
+plugin_slug=$(pslug ${source_path})
+plugin_folder=$(pfolder ${source_path})
+plugin_version=$(pversion ${source_path})
 tmp_build_dir="${dist_path}/${plugin_folder}"
 tmp_internal_vendor_dir="${tmp_build_dir}/lib/"
 
@@ -131,7 +88,7 @@ build_to_dir() {
 #   Step messages.
 #######################################
 pack_built_dir() {
-    zip_filename="${plugin_name}-${plugin_version}.zip"
+    zip_filename=$(pzipfile ${source_path})
     zip_path="${dist_path}/${zip_filename}"
     echo_step "Removing old zip file, if exists"
     rm -f "${zip_path}" || return 1
@@ -227,7 +184,7 @@ print_help() {
     echo "Options:"
     echo "  -h, --help   Show this help message."
     echo "  HIDE_HEADER  Set this environment variable to '1' to hide the header when running the script."
-    echo "               HIDE_HEADER=1 ppbuild build"
+    echo "               HIDE_HEADER=1 pbuild build"
 }
 
 # Check if user wants to see help or no command is provided
@@ -290,7 +247,7 @@ run_commands() {
     # Display a message based on whether all commands were successful or not
     if $all_success ; then
         # echo positive emoji
-        echo "🎉" " All commands executed successfully!"
+        echo "🎉" " Executed successfully!"
     fi
 }
 
