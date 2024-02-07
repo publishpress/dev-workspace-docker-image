@@ -160,13 +160,13 @@ RUN set -ex; \
             --location \
             --retry 3 \
             --output /tmp/nvm-install.sh \
-            --url https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh \
+            --url https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh \
             ; \
-        echo c6e6e30aa7fdba27a5e9b3d5b47cf5d93043b775f316e6aa2ee6981bcd3e074e88d35ed136bc050deb73e4db8047b4be86fb02a5b6bd83b8726fb068622072d9 /tmp/nvm-install.sh | sha512sum --strict --check ; \
-        bash /tmp/nvm-install.sh ; \
-        . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}; \
-        . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}; \
-        . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}; \
+        echo be675049552a27d529ef5565c73708e7b18018e9778b0ec184c98a296ea498d4d89fdf2ef10374bf115b23a95f3b37607c3a016919c04be130df99f92165fb02 /tmp/nvm-install.sh | sha512sum --strict --check ; \
+        bash /tmp/nvm-install.sh; \
+        . $NVM_DIR/nvm.sh && nvm install ${NODE_VERSION}; \
+        . $NVM_DIR/nvm.sh && nvm use v${NODE_VERSION}; \
+        . $NVM_DIR/nvm.sh && nvm alias default v${NODE_VERSION}; \
         node --version; \
         npm install -g npm@${NPM_VERSION}; \
         npm --version; \
