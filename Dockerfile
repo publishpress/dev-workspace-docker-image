@@ -177,6 +177,9 @@ RUN set -ex; \
         chmod +x wp-cli.phar && \
         mv wp-cli.phar /usr/local/bin/wp && \
     \
+    # Install droxul, a Dropbox CLI client
+        npm i droxul --g && \
+    \
     # Create dirs
         mkdir /project && \
         mkdir /scripts && \
