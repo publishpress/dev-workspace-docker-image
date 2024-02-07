@@ -205,8 +205,15 @@ RUN chmod +x \
     /scripts/longpath \
     /scripts/mergedep \
     /scripts/parsejson \
-    /scripts/ppbuild \
+    /scripts/pbuild \
+    /scripts/pdropbox \
+    /scripts/pfile \
+    /scripts/pfolder \
+    /scripts/pname \
     /scripts/pptests \
+    /scripts/pslug \
+    /scripts/pversion \
+    /scripts/pzipfile \
     /scripts/testsbootstrap \
     /scripts/version
 
