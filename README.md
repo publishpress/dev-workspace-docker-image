@@ -43,6 +43,13 @@ running `pdropbox` the first time and following the instructions.
 The uploaded files will be available in the folder you select when creatin the Dropbox App, which can
 be an Scoped App (App Folder).
 
+### Caching the Dropbox Access Token
+
+In order to avoid having to generate a new access token every time you run the `pdropbox` command, you can
+cache the access token in a file. The file will be created in the `/` directory and will be named `.dropbox_uploader`.
+Make sure to include this file in the child dev-workspace image as a volume (`compose.yaml`), so the access token is
+available in the next run.
+
 ### Unlinking Dropbox Account
 
 If you want to unlink your Dropbox account, you can run `pdropbox unlink`.
