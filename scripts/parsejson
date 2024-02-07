@@ -45,7 +45,7 @@ function getProperty(array $data, string $property): string
 
 // Check if required arguments are provided
 if ($argc !== 3) {
-    echo "Usage: php script.php <json_file_path> <property_path>\n";
+    echo "Usage: parsejson <json_file_path> <property_path>\n";
     exit(1);
 }
 
