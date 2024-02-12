@@ -4,7 +4,7 @@ FROM php:8.1-cli
 # Install dependencies
 ####################################################################################################
 
-ENV DEV_WORKSPACE_VERSION 3.0.0
+ENV DEV_WORKSPACE_VERSION 3.1.0
 ENV PROJECT_PATH=/project
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /root/.composer
