@@ -111,6 +111,7 @@ alias ohmyzsh="mate ~/.oh-my-zsh"
 alias wp="wp --allow-root"
 alias proj="cd $PROJECT_PATH"
 alias ppbuild="pbuild"
+alias c="composer"
 
 # If GH auth file exists, login to gh command
 if [[ -f $PROJECT_PATH/dev-workspace/cache/gh-token.txt ]]; then
