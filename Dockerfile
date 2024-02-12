@@ -141,7 +141,7 @@ RUN set -ex; \
           --output /tmp/installer.php \
           --url https://raw.githubusercontent.com/composer/getcomposer.org/main/web/installer \
         ; \
-        echo 8ce04a015c1cb1afa80bbf623184901644631fd5859273e6025c65b0d87ca27a428c951baa508e07a9b2fe1c210d861f386d011f691d5060dcc8780961443081 /tmp/installer.php | sha512sum --strict --check ; \
+        echo 75288634d265b584d20d4e404099109dded2a8253e6f33158dd5e2cc13a39733419d0d25a59a3482800afcc8cf21015697ca0a1052ee1ef7b5dfa75a265c0072 /tmp/installer.php | sha512sum --strict --check ; \
         # install composer phar binary
         php /tmp/installer.php \
             --no-ansi \
