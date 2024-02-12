@@ -118,3 +118,8 @@ if [[ -f $PROJECT_PATH/dev-workspace/cache/gh-token.txt ]]; then
      GH_TOKEN=$(cat $PROJECT_PATH/dev-workspace/cache/gh-token.txt)
      gh auth login --with-token <<< $GH_TOKEN
 fi
+
+# If the env var DROPBOX_ACCESS_TOKEN is set, write it to /root/.dropbox_uploader
+if [[ -n $DROPBOX_ACCESS_TOKEN ]]; then
+    echo "OAUTH_ACCESS_TOKEN=${DROPBOX_ACCESS_TOKEN}" > /root/.dropbox_uploader
+fi
