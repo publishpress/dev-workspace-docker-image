@@ -11,6 +11,7 @@ ENV COMPOSER_HOME /root/.composer
 ENV COMPOSER_VERSION 2.7.1
 ENV NODE_VERSION=14.19.3
 ENV NPM_VERSION=6.14.17
+ENV NVM_VERSION=0.39.7
 ENV NVM_DIR=/root/.nvm
 ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 ENV PLUGIN_NAME="Generic"
@@ -160,7 +161,7 @@ RUN set -ex; \
             --location \
             --retry 3 \
             --output /tmp/nvm-install.sh \
-            --url https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh \
+            --url https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh \
             ; \
         echo be675049552a27d529ef5565c73708e7b18018e9778b0ec184c98a296ea498d4d89fdf2ef10374bf115b23a95f3b37607c3a016919c04be130df99f92165fb02 /tmp/nvm-install.sh | sha512sum --strict --check ; \
         bash /tmp/nvm-install.sh; \
