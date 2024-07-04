@@ -87,6 +87,7 @@ RUN set -ex; \
             containerd.io \
             docker-buildx-plugin \
             docker-compose-plugin \
+            jq \
             ; \
     \
     # PHP Extensions
