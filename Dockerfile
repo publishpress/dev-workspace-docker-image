@@ -4,11 +4,11 @@ FROM php:8.1-cli
 # Install dependencies
 ####################################################################################################
 
-ENV DEV_WORKSPACE_VERSION 3.1.0
+ENV DEV_WORKSPACE_VERSION 3.1.1
 ENV PROJECT_PATH=/project
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /root/.composer
-ENV COMPOSER_VERSION 2.7.1
+ENV COMPOSER_VERSION 2.7.7
 ENV NODE_VERSION=14.19.3
 ENV NPM_VERSION=6.14.17
 ENV NVM_VERSION=0.39.7
@@ -142,7 +142,7 @@ RUN set -ex; \
           --output /tmp/installer.php \
           --url https://raw.githubusercontent.com/composer/getcomposer.org/main/web/installer \
         ; \
-        echo 75288634d265b584d20d4e404099109dded2a8253e6f33158dd5e2cc13a39733419d0d25a59a3482800afcc8cf21015697ca0a1052ee1ef7b5dfa75a265c0072 /tmp/installer.php | sha512sum --strict --check ; \
+        echo e6ea7b83dee70bb7c90331b08d6d01ffcbf683c293045723aa1880413bc2a0e024e1b340c5a54ef4fef93006333bc03a9b1b353a611e8aec44098d0a5c49dd97 /tmp/installer.php | sha512sum --strict --check ; \
         # install composer phar binary
         php /tmp/installer.php \
             --no-ansi \
