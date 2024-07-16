@@ -2,10 +2,8 @@ name: devworkspace_generic
 services:
     terminal:
         build: .
-        image: publishpress/dev-workspace-terminal:generic-alpine.1
-        command: ["/bin/sh"]
+        image: publishpress/dev-workspace-terminal:generic-alpine.3.20
+        command: ["/bin/zsh"]
         stdin_open: true
         tty: true
         working_dir: "/project"
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
