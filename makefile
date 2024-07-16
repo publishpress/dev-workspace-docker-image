@@ -1,6 +1,6 @@
 WORKSPACE_VERSION=4
 
-all: buildpush
+all: build
 
 help:
 	@echo "Available targets:"
