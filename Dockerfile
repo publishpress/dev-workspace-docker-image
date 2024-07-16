@@ -1,6 +1,6 @@
 FROM php:8.1-cli-alpine3.20
 
-ENV DEV_WORKSPACE_VERSION=4.0.0
+ENV DEV_WORKSPACE_VERSION=4.0.1
 ENV PROJECT_PATH=/project
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_HOME=/root/.composer
@@ -151,6 +151,7 @@ RUN set -eux; \
         yarn \
         curl \
         jq \
+        ncurses \
     ; \
     ###########################################################################
     # Clean up
