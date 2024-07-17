@@ -1,6 +1,6 @@
-FROM php:8.1-cli-alpine3.20
+FROM php:8.3-cli-alpine3.20
 
-ENV DEV_WORKSPACE_VERSION=4.0.1
+ENV DEV_WORKSPACE_VERSION=4.1.0
 ENV PROJECT_PATH=/project
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_HOME=/root/.composer
@@ -35,19 +35,32 @@ RUN set -eux; \
         openssh \
         patch \
         util-linux \
+        libzip-dev \
+        icu-dev \
+        musl-libintl \
+        openssl-dev \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libcurl \
+        curl-dev \
         ; \
     ###########################################################################
     # Install PHP extensions
     ###########################################################################
     apk add --no-cache \
-        php-zip \
-        php-gettext \
-        php-mysqli \
-        php-phar \
         php-iconv \
-        php-curl \
-        php-pdo_mysql \
-        php-gd \
+    ; \
+    docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
+    docker-php-ext-install \
+        zip \
+        intl \
+        gettext \
+        mysqli \
+        phar \
+        curl \
+        pdo_mysql \
+        gd \
     ; \
     # Install the PHP yaml extension
     apk add php-pecl-yaml; \
@@ -55,7 +68,7 @@ RUN set -eux; \
     pecl install yaml \
     ; \
     ###########################################################################
-    # Enable PHP extensions
+    # Enable manually installed PHP extensions
     ###########################################################################
     docker-php-ext-enable \
         yaml \
