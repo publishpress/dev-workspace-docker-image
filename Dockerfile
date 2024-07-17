@@ -165,6 +165,15 @@ RUN set -eux; \
         curl \
         jq \
         ncurses \
+        libpng \
+        libjpeg \
+        libzip \
+        libxml2 \
+        libmcrypt \
+        libcurl \
+        libwebp \
+        freetype \
+        yaml \
     ; \
     ###########################################################################
     # Clean up
