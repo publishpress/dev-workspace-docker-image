@@ -1,4 +1,4 @@
-FROM php:8.1-cli-alpine3.20
+FROM php:8.3-cli-alpine3.20
 
 ENV DEV_WORKSPACE_VERSION=4.0.1
 ENV PROJECT_PATH=/project
