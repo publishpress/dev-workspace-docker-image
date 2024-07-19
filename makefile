@@ -10,4 +10,4 @@ build:
 	docker compose -f compose.yaml build
 
 push:
-	docker buildx build --platform linux/amd64,linux/arm64 --push -t publishpress/dev-workspace-terminal:generic-4.1.1 .
+	docker buildx build --platform linux/amd64,linux/arm64 --push -t publishpress/dev-workspace-terminal:generic-4.2.0 .
