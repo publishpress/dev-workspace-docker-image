@@ -1,6 +1,37 @@
+# Stage: Build tmate
+ARG PLATFORM=amd64
+FROM ${PLATFORM}/alpine:3.10 AS build_tmate
+
+WORKDIR /build
+
+RUN apk add --no-cache wget cmake make gcc g++ linux-headers zlib-dev openssl-dev \
+            automake autoconf libevent-dev ncurses-dev msgpack-c-dev libexecinfo-dev \
+            ncurses-static libexecinfo-static libevent-static msgpack-c ncurses-libs \
+            libevent libexecinfo openssl zlib git
+
+RUN set -ex; \
+            mkdir -p /src/libssh/build; \
+            cd /src; \
+            wget -O libssh.tar.xz https://www.libssh.org/files/0.9/libssh-0.9.0.tar.xz; \
+            tar -xf libssh.tar.xz -C /src/libssh --strip-components=1; \
+            cd /src/libssh/build; \
+            cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+            -DWITH_SFTP=OFF -DWITH_SERVER=OFF -DWITH_PCAP=OFF \
+            -DWITH_STATIC_LIB=ON -DWITH_GSSAPI=OFF ..; \
+            make -j $(nproc); \
+            make install
+
+RUN git clone https://github.com/tmate-io/tmate.git .
+RUN ./autogen.sh && ./configure --enable-static
+RUN make -j $(nproc)
+RUN objcopy --only-keep-debug tmate tmate.symbols && chmod -x tmate.symbols && strip tmate
+RUN ./tmate -V
+
+# Stage: Build Dev Workspace
+
 FROM php:8.3-cli-alpine3.20
 
-ENV DEV_WORKSPACE_VERSION=4.1.1
+ENV DEV_WORKSPACE_VERSION=4.2.0
 ENV PROJECT_PATH=/project
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_HOME=/root/.composer
@@ -8,6 +39,11 @@ ENV COMPOSER_VERSION=2.7.7
 ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:${PATH}"
 ENV PLUGIN_NAME="Generic"
 ENV PLUGIN_TYPE="FREE"
+
+RUN mkdir /usr/local/tmate
+ENV PATH=/usr/local/tmate:$PATH
+COPY --from=build_tmate /build/tmate.symbols /usr/local/tmate
+COPY --from=build_tmate /build/tmate /usr/local/tmate
 
 # Install basic tools
 RUN set -eux; \
