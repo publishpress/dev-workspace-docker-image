@@ -61,7 +61,8 @@ build_to_dir() {
     # Step needed for the plugins, to update the free-plugin-alias in the vendor dir
     echo_step "Updating dependencies on /vendor./"
     echo ""
-    composer update --no-dev --working-dir="${tmp_build_dir}" || return 7
+    composer update --lock --working-dir="${tmp_build_dir}" || return 7.1
+    composer install --no-dev --working-dir="${tmp_build_dir}" || return 7
 
     echo_step "Dumping Composer autoload on /lib/vendor"
     echo ""
