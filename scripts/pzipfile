@@ -4,8 +4,6 @@
 
 # Set the SOURCE_PATH variable to the current directory or use the passed argument.
 SOURCE_PATH=${1:-$(pwd)}
-PLUGIN_SLUG=$(pslug ${SOURCE_PATH})
-PLUGIN_VERSION=$(pversion ${SOURCE_PATH})
 
 # Show the usage information.
 usage() {
@@ -16,9 +14,14 @@ usage() {
 }
 
 # Check if the usage information should be displayed.
-if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
     usage
     exit 0
 fi
 
-echo ${PLUGIN_SLUG}-${PLUGIN_VERSION}.zip
+# Get the plugin slug and version
+PLUGIN_SLUG=$(pslug ${SOURCE_PATH})
+PLUGIN_VERSION=$(pversion ${SOURCE_PATH})
+
+# Output the ZIP file name
+echo "${PLUGIN_SLUG}-${PLUGIN_VERSION}.zip"
