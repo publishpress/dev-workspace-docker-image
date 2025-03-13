@@ -1,1 +1,0 @@
-# publishpress-phpcs-standards
