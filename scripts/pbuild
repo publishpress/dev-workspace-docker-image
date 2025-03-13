@@ -4,17 +4,17 @@
 
 start_time=$(date +%s)
 
-script_version="1.4.1"
+script_version="1.4.2"
 
 command=${1}
 source_path=$(pwd)
 dist_path="${source_path}/dist"
 cols=$(( ${#TERM} ? $(tput cols) : 80 ))
 
-plugin_name=$(pname ${source_path})
-plugin_slug=$(pslug ${source_path})
-plugin_folder=$(pfolder ${source_path})
-plugin_version=$(pversion ${source_path})
+plugin_name=$(./pname ${source_path})
+plugin_slug=$(./pslug ${source_path})
+plugin_folder=$(./pfolder ${source_path})
+plugin_version=$(./pversion ${source_path})
 tmp_build_dir="${dist_path}/${plugin_folder}"
 tmp_internal_vendor_dir="${tmp_build_dir}/lib/"
 
