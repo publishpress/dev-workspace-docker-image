@@ -1,1 +1,4 @@
 /.idea
+tests/plugin/lib/vendor
+tests/plugin/dev-workspace/.cache
+tests/plugin/dist/*

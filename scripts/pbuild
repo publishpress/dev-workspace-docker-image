@@ -4,7 +4,7 @@
 
 start_time=$(date +%s)
 
-script_version="1.4.0"
+script_version="1.4.2"
 
 command=${1}
 source_path=$(pwd)
@@ -56,22 +56,21 @@ build_to_dir() {
 
     echo_step "Copying plugin files to the dist dir filtering the files listed on .rsync-filters-pre-build"
     mkdir -p "${tmp_build_dir}" || return 1
-    rsync -r -f 'merge .rsync-filters-pre-build' "${source_path}/" "${tmp_build_dir}" || return 2
+    rsync -r -f 'merge .rsync-filters-pre-build' "${source_path}/" "${tmp_build_dir}" || return 1000
 
     # Step needed for the plugins, to update the free-plugin-alias in the vendor dir
     echo_step "Updating dependencies on /vendor./"
     echo ""
-    composer update --lock --working-dir="${tmp_build_dir}" || return 7.1
-    composer install --no-dev --working-dir="${tmp_build_dir}" || return 7
+    composer install --no-dev --working-dir="${tmp_build_dir}" || return 1002
 
     echo_step "Dumping Composer autoload on /lib/vendor"
     echo ""
-    composer dumpautoload -o --working-dir="${tmp_internal_vendor_dir}" || return 3
+    composer dumpautoload -o --working-dir="${tmp_internal_vendor_dir}" || return 1003
 
     echo_step "Removing files listed on .rsync-filters-post-build"
-    rsync -r -f 'merge .rsync-filters-post-build' "${tmp_build_dir}/" "${tmp_build_dir}-tmp" || return 4
-    rm -rf "${tmp_build_dir}" || return 5
-    mv "${tmp_build_dir}-tmp" "${tmp_build_dir}" || return 6
+    rsync -r -f 'merge .rsync-filters-post-build' "${tmp_build_dir}/" "${tmp_build_dir}-tmp" || return 1004
+    rm -rf "${tmp_build_dir}" || return 1005
+    mv "${tmp_build_dir}-tmp" "${tmp_build_dir}" || return 1006
 
     echo ""
 }
