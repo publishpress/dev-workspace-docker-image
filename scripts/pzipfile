@@ -20,8 +20,8 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
 fi
 
 # Get the plugin slug and version
-PLUGIN_SLUG=$(pslug ${SOURCE_PATH})
+PLUGIN_NAME=$(pname ${SOURCE_PATH})
 PLUGIN_VERSION=$(pversion ${SOURCE_PATH})
 
 # Output the ZIP file name
-echo "${PLUGIN_SLUG}-${PLUGIN_VERSION}.zip"
+echo "${PLUGIN_NAME}-${PLUGIN_VERSION}.zip"
