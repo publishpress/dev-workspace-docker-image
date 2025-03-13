@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 IMAGE_NAME := publishpress/dev-workspace-terminal
-IMAGE_TAG := generic-4.3.0
+IMAGE_TAG := generic-4.3.2
 PLATFORMS := linux/amd64,linux/arm64
 TITLE_COLOR := \033[1;33m
 SUCCESS_COLOR := \033[1;32m
@@ -28,6 +28,8 @@ endef
 
 help:
 	@echo "Usage: make [target]"
+	@echo ""
+	@echo "Targets:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 build: ## Build the Docker image

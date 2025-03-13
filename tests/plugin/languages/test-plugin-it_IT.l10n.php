@@ -1,0 +1,2 @@
+<?php
+return ['domain'=>NULL,'plural-forms'=>'nplurals=2; plural=(n > 1);','language'=>'it_IT','project-id-version'=>'Test Plugin 1.0.0','pot-creation-date'=>'2024-10-18 16:30-0300','po-revision-date'=>'','x-generator'=>'Poedit 3.5','messages'=>['Test Plugin'=>'Plugin di prova','https://example.com/test-plugin'=>'https://example.com/test-plugin','A test plugin for demonstration purposes.'=>'Un plugin di prova a scopo dimostrativo.','Your Name'=>'Il tuo nome','https://example.com'=>'https://example.com','Hello World'=>'Ciao mondo']];
