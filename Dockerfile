@@ -1,12 +1,11 @@
 # Stage: Build Dev Workspace
-FROM php:8.3-cli-alpine3.20
+FROM php:8.3-cli-alpine3.21
 
-ENV DEV_WORKSPACE_VERSION=4.3.2 \
+ENV DEV_WORKSPACE_VERSION=4.3.3 \
     PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/root/.composer \
-    COMPOSER_VERSION=2.7.7 \
-    PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:${PATH}" \
+    COMPOSER_VERSION=2.8.6 \
     PLUGIN_NAME="Generic" \
     PLUGIN_TYPE="FREE"
 
@@ -28,7 +27,7 @@ RUN set -eux; \
     apk add --no-cache \
         php-iconv php-pecl-yaml nodejs npm yarn bash rsync zsh gettext zip unzip \
         git jq ncurses libpng libjpeg libzip libxml2 libmcrypt libcurl libwebp \
-        freetype yaml make; \
+        freetype yaml make 7zip; \
     \
     # Configure and install PHP extensions
     docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
