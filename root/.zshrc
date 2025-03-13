@@ -123,3 +123,5 @@ fi
 if [[ -n $DROPBOX_ACCESS_TOKEN ]]; then
     echo "OAUTH_ACCESS_TOKEN=${DROPBOX_ACCESS_TOKEN}" > /root/.dropbox_uploader
 fi
+
+export PATH="/scripts:$PATH"
