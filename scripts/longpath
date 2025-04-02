@@ -48,7 +48,7 @@ foreach ($iterator as $info) {
     $filePath = $info->getPathname();
 
     // Skip files in subdirectories test, dist, and dev-workspace
-    if (preg_match('#/(test|dist|dev-workspace)/#', $filePath)) {
+    if (preg_match('#/(test|dist|dev-workspace|node_modules)/#', $filePath)) {
         continue;
     }
 
