@@ -25,7 +25,7 @@ RUN set -eux; \
         freetype-dev libjpeg-turbo-dev libpng-dev libcurl curl-dev; \
     # Install runtime dependencies
     apk add --no-cache \
-        php-iconv php-pecl-yaml nodejs npm yarn bash rsync zsh gettext zip unzip \
+        php-iconv php-pecl-yaml nodejs npm yarn bash bat rsync zsh gettext zip unzip \
         git jq ncurses libpng libjpeg libzip libxml2 libmcrypt libcurl libwebp \
         freetype yaml make 7zip; \
     \
