@@ -81,6 +81,20 @@ The following commands are available in the image:
 - `pzipfile` - Script to get the plugin zip file name
 - `version` - Show the version of the dev-workspace
 
+## Tools available
+
+- bats - Testing framework for Bash scripts
+- bet - "cat" command with syntax highlight
+...
+
+## How to test
+
+Run the following command inside the container.
+
+
+```bash
+bats /tests/test_longpath.bats
+```
 
 ## License
 

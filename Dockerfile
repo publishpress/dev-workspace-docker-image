@@ -27,7 +27,7 @@ RUN set -eux; \
     apk add --no-cache \
         php-iconv php-pecl-yaml nodejs npm yarn bash bat rsync zsh gettext zip unzip \
         git jq ncurses libpng libjpeg libzip libxml2 libmcrypt libcurl libwebp \
-        freetype yaml make 7zip; \
+        freetype yaml make 7zip ncurses bats; \
     \
     # Configure and install PHP extensions
     docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
