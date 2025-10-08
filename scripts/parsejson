@@ -1,71 +1,72 @@
-#!/usr/bin/env php
-<?php
+#!/usr/bin/env bash
 
-/**
- * Parse a JSON file and return the content as an array.
- */
-function parseJson(string $jsonFilePath): array
-{
-    $jsonContent = trim(file_get_contents($jsonFilePath));
-    $jsonContent = (array) json_decode($jsonContent);
+# Script to parse JSON files and extract property values using jq.
 
-    return $jsonContent;
+show_help() {
+    echo "Usage: parsejson <json_file_path> <property_path>"
+    echo ""
+    echo "Arguments:"
+    echo "  json_file_path    Path to the JSON file to parse"
+    echo "  property_path     Property path using dot notation (e.g., 'extra.plugin-name' or 'name')"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help        Display this help message"
 }
 
-/**
- * Return a property from an array.
- */
-function getProperty(array $data, string $property): string
-{
-    $propertyList = explode('.', $property);
-    $property = array_shift($propertyList);
-    $nextProperties = implode('.', $propertyList);
-    $value = 'null';
+# Check for help flag
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    show_help
+    exit 0
+fi
 
-    if (isset($data[$property])) {
-        $value = $data[$property];
+# Check if required arguments are provided
+if [ $# -ne 2 ]; then
+    echo "Usage: parsejson <json_file_path> <property_path>"
+    exit 1
+fi
 
-        if (is_object($value)) {
-            $value = (array) $value;
-        }
+json_file="$1"
+property_path="$2"
 
-        if (is_array($value)) {
-            if (!empty($nextProperties)) {
-                $value = getProperty($value, $nextProperties);
-            } else {
-                $value = implode(', ', $value);
-            }
-        }
+# Check if the JSON file exists
+if [ ! -f "$json_file" ]; then
+    echo "Error: JSON file not found: $json_file"
+    exit 1
+fi
 
-        $value = (string) $value;
-    }
+# Convert dot notation to jq path format
+# e.g., "extra.plugin-name" -> '.extra["plugin-name"]'
+# We need to handle properties that may contain hyphens by using bracket notation
+IFS='.' read -ra parts <<< "$property_path"
+jq_path=""
 
-    return $value;
-}
+for part in "${parts[@]}"; do
+    # If part contains hyphen or special characters, use bracket notation
+    if [[ "$part" =~ [^a-zA-Z0-9_] ]]; then
+        jq_path="${jq_path}[\"${part}\"]"
+    else
+        # For simple identifiers, use dot notation
+        if [ -z "$jq_path" ]; then
+            jq_path=".${part}"
+        else
+            jq_path="${jq_path}.${part}"
+        fi
+    fi
+done
 
-// Check if required arguments are provided
-if ($argc !== 3) {
-    echo "Usage: parsejson <json_file_path> <property_path>\n";
-    exit(1);
-}
+# Extract the value using jq
+result=$(jq -r "$jq_path // empty" "$json_file" 2>/dev/null)
 
-// Get JSON file path and property path from command-line arguments
-$jsonFile = $argv[1];
-$property = $argv[2];
+# Check if jq command was successful and returned a value
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to parse JSON file"
+    exit 1
+fi
 
-// Check if the JSON file exists
-if (!file_exists($jsonFile)) {
-    echo "Error: JSON file not found: $jsonFile\n";
-    exit(1);
-}
+if [ -z "$result" ]; then
+    echo "Error: Property '$property_path' not found in the JSON file."
+    exit 1
+fi
 
-// Load the JSON content and extract the property value
-$jsonContent = parseJson($jsonFile);
-$propertyValue = getProperty($jsonContent, $property);
-
-// Display the property value or an error message if not found
-if ($propertyValue !== 'null') {
-    echo "$propertyValue";
-} else {
-    echo "Error: Property '$property' not found in the JSON file.\n";
-}
+# Output the result
+echo "$result"

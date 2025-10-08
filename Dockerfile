@@ -1,13 +1,14 @@
 # Stage: Build Dev Workspace
 FROM php:8.3-cli-alpine3.21
 
-ENV DEV_WORKSPACE_VERSION=4.3.6 \
+ENV DEV_WORKSPACE_VERSION=4.4.0 \
     PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/root/.composer \
     COMPOSER_VERSION=2.8.6 \
     PLUGIN_NAME="Generic" \
-    PLUGIN_TYPE="FREE"
+    PLUGIN_TYPE="FREE" \
+    TERM=xterm-256color
 
 COPY scripts/ /scripts/
 COPY root/.zshrc /root/.zshrc
@@ -54,8 +55,8 @@ RUN set -eux; \
     npm i cross-env -g; \
     \
     # Install zsh
-    sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.0/zsh-in-docker.sh)" -- \
-        -t ys -p git -p asdf -p wp-cli -p ssh-agent; \
+    sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" -- \
+        -t ys -p git -p asdf -p wp-cli; \
     \
     # Create dirs and adjust permissions
     mkdir -p /project; \

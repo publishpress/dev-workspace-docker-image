@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 IMAGE_NAME := publishpress/dev-workspace-terminal
-IMAGE_TAG := generic-4.3.6
+IMAGE_TAG := generic-4.4.0
 PLATFORMS := linux/amd64,linux/arm64
 TITLE_COLOR := \033[1;33m
 SUCCESS_COLOR := \033[1;32m
