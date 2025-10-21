@@ -1,5 +1,5 @@
 # Stage: Build Dev Workspace
-FROM php:8.3-cli-alpine3.21
+FROM php:8.3.26-cli-alpine3.21
 
 ENV DEV_WORKSPACE_VERSION=4.4.0 \
     PROJECT_PATH=/project \
