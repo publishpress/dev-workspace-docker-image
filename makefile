@@ -19,7 +19,7 @@ define build
 endef
 
 define push
-	docker buildx build --platform ${PLATFORMS} --push -t ${IMAGE_NAME}:${IMAGE_TAG} .
+	docker buildx build --platform ${PLATFORMS} --provenance=mode=max --push -t ${IMAGE_NAME}:${IMAGE_TAG} .
 endef
 
 define bootstrap
@@ -36,6 +36,11 @@ build: ## Build the Docker image
 	@$(call echo_colored,${TITLE_COLOR},"Building the image...")
 	@$(call build)
 	$(call echo_colored,${SUCCESS_COLOR},"Image built successfully!")
+
+build-provenance: ## Build the Docker image with provenance attestations
+	@$(call echo_colored,${TITLE_COLOR},"Building the image with provenance attestations...")
+	docker buildx build --platform ${PLATFORMS} --provenance=mode=max -t ${IMAGE_NAME}:${IMAGE_TAG} .
+	$(call echo_colored,${SUCCESS_COLOR},"Image built with provenance attestations successfully!")
 
 push: ## Push the Docker image to the registry
 	@$(call echo_colored,${TITLE_COLOR},"Pushing the image...")
