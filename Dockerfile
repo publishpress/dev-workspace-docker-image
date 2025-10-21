@@ -27,9 +27,23 @@ RUN set -eux; \
         freetype-dev libjpeg-turbo-dev libpng-dev libcurl curl-dev; \
     # Install runtime dependencies
     apk add --no-cache \
-        php-iconv php-pecl-yaml nodejs npm yarn bash bat rsync zsh gettext zip unzip \
+        php-iconv php-pecl-yaml nodejs npm yarn bash rsync zsh gettext zip unzip \
         git jq ncurses libpng libjpeg libzip libxml2 libmcrypt libcurl libwebp \
         freetype yaml make 7zip ncurses bats; \
+    \
+    # Install latest bat version to fix libgit2-sys vulnerability (CVE-2024-24577)
+    ARCH=$(uname -m); \
+    case $ARCH in \
+        x86_64) BAT_ARCH="x86_64-unknown-linux-musl" ;; \
+        aarch64) BAT_ARCH="aarch64-unknown-linux-musl" ;; \
+        armv7l) BAT_ARCH="arm-unknown-linux-musleabihf" ;; \
+        *) echo "Unsupported architecture: $ARCH" && exit 1 ;; \
+    esac; \
+    wget -O /tmp/bat.tar.gz "https://github.com/sharkdp/bat/releases/download/v0.26.0/bat-v0.26.0-${BAT_ARCH}.tar.gz"; \
+    tar -xzf /tmp/bat.tar.gz -C /tmp; \
+    mv /tmp/bat-v0.26.0-${BAT_ARCH}/bat /usr/local/bin/; \
+    chmod +x /usr/local/bin/bat; \
+    rm -rf /tmp/bat.tar.gz /tmp/bat-v0.26.0-${BAT_ARCH}; \
     \
     # Configure and install PHP extensions
     docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
