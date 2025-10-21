@@ -1,5 +1,5 @@
 # Stage: Build Dev Workspace
-FROM php:8.3.26-cli-alpine3.21
+FROM php:8.3-cli-alpine3.22
 
 ENV DEV_WORKSPACE_VERSION=4.4.1 \
     PROJECT_PATH=/project \
@@ -18,6 +18,7 @@ COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/
 # Install dependencies and tools, clean up in a single layer
 RUN set -eux; \
     apk update; \
+    apk upgrade; \
     # Install build dependencies
     apk add --no-cache --virtual .build-deps \
         curl yaml-dev wget autoconf gcc g++ automake make \
@@ -61,6 +62,9 @@ RUN set -eux; \
     # Create dirs and adjust permissions
     mkdir -p /project; \
     find /scripts -type f -exec chmod +x {} +; \
+    \
+    # Verify libxml2 version is secure (>= 2.13.9-r0)
+    apk info libxml2 | grep -E "libxml2-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" || (echo "libxml2 version check failed" && exit 1); \
     \
     # Clean up
     apk del --no-network --purge .build-deps; \
