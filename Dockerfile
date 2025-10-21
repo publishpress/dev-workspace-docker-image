@@ -1,7 +1,7 @@
 # Stage: Build Dev Workspace
 FROM php:8.3.26-cli-alpine3.21
 
-ENV DEV_WORKSPACE_VERSION=4.4.0 \
+ENV DEV_WORKSPACE_VERSION=4.4.1 \
     PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/root/.composer \
