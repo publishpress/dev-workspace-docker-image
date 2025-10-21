@@ -49,8 +49,11 @@ RUN set -eux; \
     chmod +x wp-cli.phar; \
     mv wp-cli.phar /usr/local/bin/wp; \
     \
-    # Install droxul
-    npm i droxul -g; \
+    # Install droxul (latest version to fix node-fetch vulnerability)
+    npm i droxul@latest -g; \
+    \
+    # Force update node-fetch to secure version (>=2.6.7) to fix CVE vulnerability
+    npm i node-fetch@2.6.7 -g; \
     \
     # Install cross-env
     npm i cross-env -g; \
