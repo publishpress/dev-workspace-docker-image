@@ -11,7 +11,6 @@ ENV DEV_WORKSPACE_VERSION=4.4.1 \
     TERM=xterm-256color
 
 COPY scripts/ /scripts/
-COPY root/.zshrc /root/.zshrc
 COPY php-conf.d/error-logging.ini /usr/local/etc/php/conf.d/
 COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/
 
@@ -93,7 +92,7 @@ RUN set -eux; \
     \
     # Verify yaml package is updated to fix CVE vulnerability (CVSS 7.5)
     YAML_VERSION=$(apk info yaml | grep -oE "yaml-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" | sed 's/yaml-//'); \
-    if [ "$(printf '%s\n' "0.2.5-r2" "$YAML_VERSION" | sort -V | head -n1)" = "0.2.5-r2" ]; then \
+    if [ "$(printf '%s\n' "0.2.5-r2" "$YAML_VERSION" | sort -V | head -n1)" != "0.2.5-r2" ]; then \
         echo "yaml version $YAML_VERSION is vulnerable. Need > 0.2.5-r2" && exit 1; \
     fi; \
     \
@@ -101,6 +100,9 @@ RUN set -eux; \
     apk del --no-network --purge .build-deps; \
     rm -rf /var/cache/apk/* /tmp/* /etc/lib/apk/db/scripts.tar; \
     find /tmp -type d -exec chmod -v 1777 {} +
+
+# Copy custom .zshrc after zsh installation
+COPY root/.zshrc /root/.zshrc
 
 ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:${PATH}"
 

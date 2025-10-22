@@ -3,9 +3,12 @@ services:
     terminal:
         build: .
         image: publishpress/dev-workspace-terminal:generic-4.4.1
-        command: ["/bin/zsh"]
+        command: ["/bin/zsh", "-l"]
         stdin_open: true
         tty: true
         working_dir: "/project"
+        environment:
+            - PLUGIN_NAME=${PLUGIN_NAME:-Base Image}
+            - PLUGIN_TYPE=${PLUGIN_TYPE:-GENERIC}
         volumes:
             - ./tests:/tests
