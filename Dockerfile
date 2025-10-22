@@ -19,6 +19,8 @@ COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/
 RUN set -eux; \
     apk update; \
     apk upgrade; \
+    # Explicitly upgrade yaml package to fix CVE vulnerability (CVSS 7.5)
+    apk upgrade yaml; \
     # Install build dependencies
     apk add --no-cache --virtual .build-deps \
         curl yaml-dev wget autoconf gcc g++ automake make \
@@ -87,6 +89,12 @@ RUN set -eux; \
     JQ_VERSION=$(apk info jq | grep -oE "jq-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" | sed 's/jq-//'); \
     if [ "$(printf '%s\n' "1.8.0-r0" "$JQ_VERSION" | sort -V | head -n1)" != "1.8.0-r0" ]; then \
         echo "jq version $JQ_VERSION is vulnerable. Need >= 1.8.0-r0" && exit 1; \
+    fi; \
+    \
+    # Verify yaml package is updated to fix CVE vulnerability (CVSS 7.5)
+    YAML_VERSION=$(apk info yaml | grep -oE "yaml-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" | sed 's/yaml-//'); \
+    if [ "$(printf '%s\n' "0.2.5-r2" "$YAML_VERSION" | sort -V | head -n1)" = "0.2.5-r2" ]; then \
+        echo "yaml version $YAML_VERSION is vulnerable. Need > 0.2.5-r2" && exit 1; \
     fi; \
     \
     # Clean up
