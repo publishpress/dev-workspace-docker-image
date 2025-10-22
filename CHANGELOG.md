@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.4.2] 22 October, 2025
+
+- **Security**: Fix jq vulnerability (CVE-2024-53427, CVE-2024-23337, CVE-2025-48060) by updating to v1.8.0-r0
+
 ## [4.4.1] 21 October, 2025
 
 - Update base image to php:8.3-cli-alpine3.22.

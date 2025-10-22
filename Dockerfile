@@ -83,6 +83,12 @@ RUN set -eux; \
     # Verify libxml2 version is secure (>= 2.13.9-r0)
     apk info libxml2 | grep -E "libxml2-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" || (echo "libxml2 version check failed" && exit 1); \
     \
+    # Verify jq version is secure (>= 1.8.0-r0) to fix CVE vulnerabilities
+    JQ_VERSION=$(apk info jq | grep -oE "jq-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" | sed 's/jq-//'); \
+    if [ "$(printf '%s\n' "1.8.0-r0" "$JQ_VERSION" | sort -V | head -n1)" != "1.8.0-r0" ]; then \
+        echo "jq version $JQ_VERSION is vulnerable. Need >= 1.8.0-r0" && exit 1; \
+    fi; \
+    \
     # Clean up
     apk del --no-network --purge .build-deps; \
     rm -rf /var/cache/apk/* /tmp/* /etc/lib/apk/db/scripts.tar; \
