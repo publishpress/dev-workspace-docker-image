@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.4.3] 22 October, 2025
+
+- **Enhancement**: Enhance .zshrc to source local configuration from ~/.zshrc.local if it exists, providing a way to customize user settings.\
+
 ## [4.4.2] 22 October, 2025
 
 - **Security**: Fix jq vulnerability (CVE-2024-53427, CVE-2024-23337, CVE-2025-48060) by updating to v1.8.0-r0
