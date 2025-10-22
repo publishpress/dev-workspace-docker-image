@@ -77,33 +77,6 @@ update_version() {
     print_color "$GREEN" "✓ Version updated successfully!"
 }
 
-# Function to add changelog entry
-add_changelog_entry() {
-    local new_version="$1"
-    local bump_type="$2"
-    local today=$(date '+%d %B, %Y')
-
-    print_color "$BLUE" "Adding changelog entry for version $new_version..."
-
-    # Create temporary file with new changelog entry
-    cat > changelog_temp.md << EOF
-# Changelog
-
-## [${new_version}] ${today}
-
-- **Release**: ${bump_type} version bump
-
-EOF
-
-    # Append existing changelog content (skip the first line "# Changelog")
-    tail -n +2 CHANGELOG.md >> changelog_temp.md
-
-    # Replace original changelog
-    mv changelog_temp.md CHANGELOG.md
-
-    print_color "$GREEN" "✓ Added changelog entry"
-}
-
 # Main script logic
 main() {
     local bump_type="${1:-patch}"
@@ -143,9 +116,6 @@ main() {
 
     # Update files
     update_version "$current_version" "$new_version"
-
-    # Add changelog entry
-    add_changelog_entry "$new_version" "$bump_type"
 
     print_color "$GREEN" "🎉 Version bump completed successfully!"
 }
