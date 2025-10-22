@@ -74,11 +74,17 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PROJECT_PATH="/project"
 
+# Set default values for PLUGIN_NAME and PLUGIN_TYPE if not set
+PLUGIN_NAME=${PLUGIN_NAME:-"Base Image"}
+PLUGIN_TYPE=${PLUGIN_TYPE:-"GENERIC"}
+
 # Set the prompt color based on PLUGIN_TYPE
 if [[ "$PLUGIN_TYPE" == "PRO" ]]; then
     COLOR="%{$bg[yellow]%}"
 elif [[ "$PLUGIN_TYPE" == "FREE" ]]; then
     COLOR="%{$bg[cyan]%}"
+elif [[ "$PLUGIN_TYPE" == "GENERIC" ]]; then
+    COLOR="%{$bg[green]%}"
 fi
 
 export PROMPT="
