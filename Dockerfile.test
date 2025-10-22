@@ -1,0 +1,37 @@
+FROM php:7.4-alpine
+
+# Install git, zsh and other dependencies
+RUN apk add --no-cache \
+    git \
+    bash \
+    ncurses \
+    zsh \
+    shadow
+
+# Install Bats
+RUN git clone https://github.com/bats-core/bats-core.git \
+    && cd bats-core \
+    && ./install.sh /usr/local \
+    && rm -rf /bats-core
+
+# Set working directory
+WORKDIR /app
+
+# Create directory structure
+RUN mkdir -p /app/scripts
+
+# Copy the necessary files
+COPY scripts/longpath /app/scripts/
+COPY test_longpath.bats /app/
+
+# Make the script executable
+RUN chmod +x /app/scripts/longpath
+
+# Set up zsh with a basic prompt
+RUN echo 'export PS1="[container %n@%m %~]$ "' > /root/.zshrc
+
+# Set up a proper interactive shell by default
+ENV TERM=xterm-256color
+
+# Use zsh as entrypoint
+ENTRYPOINT ["/bin/zsh"]
