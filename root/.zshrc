@@ -119,3 +119,8 @@ if [[ -n $DROPBOX_ACCESS_TOKEN ]]; then
 fi
 
 export PATH="/scripts:$PATH"
+
+if [[ -f ~/.zshrc.local ]]; then
+    source ~/.zshrc.local
+    echo "🎉 Loaded local zshrc from ~/.zshrc.local"
+fi
