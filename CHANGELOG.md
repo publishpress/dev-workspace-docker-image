@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.4.2] 22 October, 2025
+
+- **Security**: Fix jq vulnerability (CVE-2024-53427, CVE-2024-23337, CVE-2025-48060) by updating to v1.8.0-r0
+- **Security**: Fix Alpine Linux yaml package vulnerability (CVSS 7.5) by upgrading from 0.2.5-r2
+- **Enhancement**: Update Dockerfile to copy custom .zshrc after installation and modify compose.yaml to launch zsh as a login shell
+- **Enhancement**: Add environment variables support for PLUGIN_NAME and PLUGIN_TYPE
+- **Enhancement**: Enhance .zshrc to set default values for PLUGIN_NAME and PLUGIN_TYPE
+- **Enhancement**: Update prompt color logic based on PLUGIN_TYPE
+
 ## [4.4.1] 21 October, 2025
 
 - Update base image to php:8.3-cli-alpine3.22.

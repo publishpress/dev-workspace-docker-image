@@ -1,12 +1,12 @@
 SHELL := /bin/bash
 IMAGE_NAME := publishpress/dev-workspace-terminal
-IMAGE_TAG := generic-4.4.1
+IMAGE_TAG := generic-4.4.2
 PLATFORMS := linux/amd64,linux/arm64
 TITLE_COLOR := \033[1;33m
 SUCCESS_COLOR := \033[1;32m
 DEFAULT_COLOR := \033[0m
 
-.PHONY: help build push bootstrap slim
+.PHONY: help build push bootstrap slim bump-patch bump-minor bump-major
 
 all: help
 
@@ -55,3 +55,15 @@ slim: ## Create a slim version of the Docker image
 		--target ${IMAGE_NAME}:${IMAGE_TAG} \
 		--tag ${IMAGE_NAME}:slim-${IMAGE_TAG} \
 		--http-probe=false
+
+bump-patch: ## Bump patch version (e.g., 4.4.1 -> 4.4.2)
+	@$(call echo_colored,${TITLE_COLOR},"Bumping patch version...")
+	@./scripts/bump-version patch
+
+bump-minor: ## Bump minor version (e.g., 4.4.1 -> 4.5.0)
+	@$(call echo_colored,${TITLE_COLOR},"Bumping minor version...")
+	@./scripts/bump-version minor
+
+bump-major: ## Bump major version (e.g., 4.4.1 -> 5.0.0)
+	@$(call echo_colored,${TITLE_COLOR},"Bumping major version...")
+	@./scripts/bump-version major

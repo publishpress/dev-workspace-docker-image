@@ -1,7 +1,7 @@
 # Stage: Build Dev Workspace
 FROM php:8.3-cli-alpine3.22
 
-ENV DEV_WORKSPACE_VERSION=4.4.1 \
+ENV DEV_WORKSPACE_VERSION=4.4.2 \
     PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/root/.composer \
@@ -11,7 +11,6 @@ ENV DEV_WORKSPACE_VERSION=4.4.1 \
     TERM=xterm-256color
 
 COPY scripts/ /scripts/
-COPY root/.zshrc /root/.zshrc
 COPY php-conf.d/error-logging.ini /usr/local/etc/php/conf.d/
 COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/
 
@@ -19,6 +18,8 @@ COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/
 RUN set -eux; \
     apk update; \
     apk upgrade; \
+    # Explicitly upgrade yaml package to fix CVE vulnerability (CVSS 7.5)
+    apk upgrade yaml; \
     # Install build dependencies
     apk add --no-cache --virtual .build-deps \
         curl yaml-dev wget autoconf gcc g++ automake make \
@@ -83,10 +84,25 @@ RUN set -eux; \
     # Verify libxml2 version is secure (>= 2.13.9-r0)
     apk info libxml2 | grep -E "libxml2-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" || (echo "libxml2 version check failed" && exit 1); \
     \
+    # Verify jq version is secure (>= 1.8.0-r0) to fix CVE vulnerabilities
+    JQ_VERSION=$(apk info jq | grep -oE "jq-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" | sed 's/jq-//'); \
+    if [ "$(printf '%s\n' "1.8.0-r0" "$JQ_VERSION" | sort -V | head -n1)" != "1.8.0-r0" ]; then \
+        echo "jq version $JQ_VERSION is vulnerable. Need >= 1.8.0-r0" && exit 1; \
+    fi; \
+    \
+    # Verify yaml package is updated to fix CVE vulnerability (CVSS 7.5)
+    YAML_VERSION=$(apk info yaml | grep -oE "yaml-[0-9]+\.[0-9]+\.[0-9]+-r[0-9]+" | sed 's/yaml-//'); \
+    if [ "$(printf '%s\n' "0.2.5-r2" "$YAML_VERSION" | sort -V | head -n1)" != "0.2.5-r2" ]; then \
+        echo "yaml version $YAML_VERSION is vulnerable. Need > 0.2.5-r2" && exit 1; \
+    fi; \
+    \
     # Clean up
     apk del --no-network --purge .build-deps; \
     rm -rf /var/cache/apk/* /tmp/* /etc/lib/apk/db/scripts.tar; \
     find /tmp -type d -exec chmod -v 1777 {} +
+
+# Copy custom .zshrc after zsh installation
+COPY root/.zshrc /root/.zshrc
 
 ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:${PATH}"
 

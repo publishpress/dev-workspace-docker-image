@@ -74,27 +74,21 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PROJECT_PATH="/project"
 
+# Set default values for PLUGIN_NAME and PLUGIN_TYPE if not set
+export PLUGIN_NAME=${PLUGIN_NAME:-"Base Image"}
+export PLUGIN_TYPE=${PLUGIN_TYPE:-"GENERIC"}
+
 # Set the prompt color based on PLUGIN_TYPE
 if [[ "$PLUGIN_TYPE" == "PRO" ]]; then
     COLOR="%{$bg[yellow]%}"
 elif [[ "$PLUGIN_TYPE" == "FREE" ]]; then
     COLOR="%{$bg[cyan]%}"
+elif [[ "$PLUGIN_TYPE" == "GENERIC" ]]; then
+    COLOR="%{$bg[green]%}"
 fi
 
-export PROMPT="
-%{$bg[magenta]%}%{$fg[white]%} 🐧 Dev-Workspace %{$reset_color%} $COLOR%{$fg[black]%} $PLUGIN_NAME $PLUGIN_TYPE %{$reset_color%}
-%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
-%(#,%{$bg[yellow]%}%{$fg[black]%}%n%{$reset_color%},%{$fg[cyan]%}%n) \
-%{$reset_color%}@ \
-%{$fg[green]%}%m \
-%{$reset_color%}in \
-%{$terminfo[bold]$fg[yellow]%}%~%{$reset_color%}\
-${hg_info}\
-${git_info}\
-${svn_info}\
-${venv_info}\
- \
-[%*] $exit_code
+export PROMPT="%{$bg[magenta]%}%{$fg[white]%} 🐧 Dev-Workspace %{$reset_color%} $COLOR%{$fg[black]%} $PLUGIN_NAME $PLUGIN_TYPE %{$reset_color%}
+%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} %(#,%{$bg[yellow]%}%{$fg[black]%}%n%{$reset_color%},%{$fg[cyan]%}%n) %{$reset_color%}@ %{$fg[green]%}%m %{$reset_color%}in %{$terminfo[bold]$fg[yellow]%}%~%{$reset_color%}${hg_info}${git_info}${svn_info}${venv_info} [%*] $exit_code
 %{$terminfo[bold]$fg[magenta]%}➜ %{$reset_color%}"
 
 # Compilation flags
