@@ -4,6 +4,7 @@
 
 start_time=$(date +%s)
 
+script_version="1.4.3"
 
 command=${1}
 source_path=$(pwd)
