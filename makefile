@@ -7,7 +7,7 @@ TITLE_COLOR := \033[1;33m
 SUCCESS_COLOR := \033[1;32m
 DEFAULT_COLOR := \033[0m
 
-.PHONY: help build push bootstrap slim bump-patch bump-minor bump-major
+.PHONY: help build push bootstrap slim bump-patch bump-minor bump-major version
 
 all: help
 
@@ -68,3 +68,6 @@ bump-minor: ## Bump minor version (e.g., 4.4.1 -> 4.5.0)
 bump-major: ## Bump major version (e.g., 4.4.1 -> 5.0.0)
 	@$(call echo_colored,${TITLE_COLOR},"Bumping major version...")
 	@./scripts/bump-version major
+
+version: ## Display the current version
+	@echo $(VERSION)
