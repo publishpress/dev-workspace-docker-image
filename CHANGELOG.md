@@ -3,6 +3,7 @@
 ## [4.4.4] 14 January, 2026
 
 - Fix permissions on files and folders inside the built package. Command `pbuild` updated to 1.4.3.
+- Update Composer to 2.9.3.
 
 ## [4.4.3] 22 October, 2025
 
