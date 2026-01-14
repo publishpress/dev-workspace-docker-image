@@ -160,6 +160,7 @@ echo_box_line() {
 # Show the header for the script, showing
 # a few details of the plugin.
 # Globals:
+#   script_version
 #   plugin_name
 #   plugin_version
 #   plugin_slug
@@ -168,7 +169,7 @@ echo_box_line() {
 #######################################
 echo_header() {
     echo_box_line "╔" "" "═" "╗"
-    echo_box_line "║" "      __        PUBLISHPRESS PLUGIN BUILDER                     " " " "║"
+    echo_box_line "║" "      __        PUBLISHPRESS PLUGIN BUILDER - v${script_version}" " " "║"
     echo_box_line "║" "   -=(o '.      " "─" "║"
     echo_box_line "║" "     '.-.\      Name: ${plugin_name}" " " "║"
     echo_box_line "║" "     /|  \\\     Slug: ${plugin_slug}" " " "║"
