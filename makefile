@@ -1,6 +1,7 @@
 SHELL := /bin/bash
 IMAGE_NAME := publishpress/dev-workspace-terminal
-IMAGE_TAG := generic-4.4.3
+VERSION := $(shell grep "DEV_WORKSPACE_VERSION=" Dockerfile | sed 's/.*DEV_WORKSPACE_VERSION=\([0-9]*\.[0-9]*\.[0-9]*\).*/\1/')
+IMAGE_TAG := generic-$(VERSION)
 PLATFORMS := linux/amd64,linux/arm64
 TITLE_COLOR := \033[1;33m
 SUCCESS_COLOR := \033[1;32m
