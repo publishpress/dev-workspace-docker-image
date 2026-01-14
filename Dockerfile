@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.4
 # Stage: Build Dev Workspace
 FROM php:8.3-cli-alpine3.23
 
@@ -5,17 +6,20 @@ ENV DEV_WORKSPACE_VERSION=4.4.4 \
     PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/root/.composer \
-    COMPOSER_VERSION=2.8.6 \
+    COMPOSER_VERSION=2.9.3 \
     PLUGIN_NAME="Generic" \
     PLUGIN_TYPE="FREE" \
     TERM=xterm-256color
 
-COPY scripts/ /scripts/
+# Copy configuration files first (these change less frequently)
 COPY php-conf.d/error-logging.ini /usr/local/etc/php/conf.d/
 COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/
 
 # Install dependencies and tools, clean up in a single layer
-RUN set -eux; \
+# Using BuildKit cache mounts for faster rebuilds
+RUN --mount=type=cache,target=/var/cache/apk \
+    --mount=type=cache,target=/root/.npm \
+    set -eux; \
     apk update; \
     apk upgrade; \
     # Install build dependencies
@@ -38,31 +42,34 @@ RUN set -eux; \
     docker-php-ext-enable yaml; \
     \
     # Install Composer
-    mkdir /root/.composer; \
+    mkdir -p /root/.composer; \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}; \
     composer --ansi --version --no-interaction; \
-    composer diagnose; \
+    composer diagnose || true; \
     \
     # Install WP-CLI
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
     chmod +x wp-cli.phar; \
     mv wp-cli.phar /usr/local/bin/wp; \
     \
-    # Install cross-env
+    # Install cross-env (using npm cache mount)
     npm i cross-env -g; \
     \
     # Install zsh
     sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" -- \
         -t ys -p git -p asdf -p wp-cli; \
     \
-    # Create dirs and adjust permissions
+    # Create dirs
     mkdir -p /project; \
-    find /scripts -type f -exec chmod +x {} +; \
     \
     # Clean up
     apk del --no-network --purge .build-deps; \
-    rm -rf /var/cache/apk/* /tmp/* /etc/lib/apk/db/scripts.tar || true; \
-    mkdir -p /tmp && chmod 1777 /tmp
+    rm -rf /tmp/* /etc/lib/apk/db/scripts.tar || true; \
+    chmod 1777 /tmp
+
+# Copy scripts after system setup (these may change more frequently)
+COPY scripts/ /scripts/
+RUN find /scripts -type f -exec chmod +x {} +;
 
 # Copy custom .zshrc after zsh installation
 COPY root/.zshrc /root/.zshrc
