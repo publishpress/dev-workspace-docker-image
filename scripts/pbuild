@@ -4,6 +4,7 @@
 
 start_time=$(date +%s)
 
+script_version="1.4.3"
 
 command=${1}
 source_path=$(pwd)
@@ -90,10 +91,17 @@ build_to_dir() {
 pack_built_dir() {
     zip_filename=$(pzipfile ${source_path})
     zip_path="${dist_path}/${zip_filename}"
+
     echo_step "Removing old zip file, if exists"
     rm -f "${zip_path}" || return 1
     pushd "${dist_path}" >/dev/null 2>&1 || return 2
-    echo_step "Creating the zip file on dist/${zip_filename}"
+
+    # Normalize permissions before zipping
+    echo_step "Normalizing file permissions"
+    find ./${plugin_folder} -type f -exec chmod 644 {} \;
+    find ./${plugin_folder} -type d -exec chmod 755 {} \;
+
+    echo_step "Creating the zip file on dist/${zip_filename} with normalized permissions"
     zip -qr "${zip_path}" ./${plugin_folder} || return 3
     popd >/dev/null 2>&1 || return 4
 }
@@ -152,6 +160,7 @@ echo_box_line() {
 # Show the header for the script, showing
 # a few details of the plugin.
 # Globals:
+#   script_version
 #   plugin_name
 #   plugin_version
 #   plugin_slug
@@ -160,7 +169,7 @@ echo_box_line() {
 #######################################
 echo_header() {
     echo_box_line "╔" "" "═" "╗"
-    echo_box_line "║" "      __        PUBLISHPRESS PLUGIN BUILDER                     " " " "║"
+    echo_box_line "║" "      __        PUBLISHPRESS PLUGIN BUILDER - v${script_version}" " " "║"
     echo_box_line "║" "   -=(o '.      " "─" "║"
     echo_box_line "║" "     '.-.\      Name: ${plugin_name}" " " "║"
     echo_box_line "║" "     /|  \\\     Slug: ${plugin_slug}" " " "║"

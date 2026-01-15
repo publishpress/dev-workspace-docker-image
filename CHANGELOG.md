@@ -1,8 +1,13 @@
 # Changelog
 
+## [4.4.4] 14 January, 2026
+
+- Fix permissions on files and folders inside the built package. Command `pbuild` updated to 1.4.3.
+- Update Composer to 2.9.3.
+
 ## [4.4.3] 22 October, 2025
 
-- **Enhancement**: Enhance .zshrc to source local configuration from ~/.zshrc.local if it exists, providing a way to customize user settings.\
+- **Enhancement**: Enhance .zshrc to source local configuration from ~/.zshrc.local if it exists, providing a way to customize user settings.
 
 ## [4.4.2] 22 October, 2025
 
@@ -23,4 +28,4 @@
 
 ## [4.4.0] 8 October, 2025
 
-- Update pbuild applying "classmap-authoritative" optimization to composer dump autoloader instruction.
+- Update `pbuild` applying "classmap-authoritative" optimization to composer dump autoloader instruction.
