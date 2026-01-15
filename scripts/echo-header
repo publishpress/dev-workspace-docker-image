@@ -16,7 +16,7 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     exit 0
 fi
 
-echo "PUBLISHPRESS PLUGIN BUILDER - $(workspace-version)"
+echo "PUBLISHPRESS PLUGIN BUILDER - Dev-workspace ${DEV_WORKSPACE_VERSION}"
 echo-separator
 echo "      __"
 echo "    .' o)=-     Plugin name: $(plugin-name)"
