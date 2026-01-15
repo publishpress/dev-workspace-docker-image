@@ -1,6 +1,6 @@
 # Changelog
 
-## [4.5.0] 15 Jan, 2026
+## [5.0.0] 15 Jan, 2026
 
 - **Refactoring**: Modularized `pbuild` script into individual utility scripts for better maintainability and reusability
 - **Enhancement**: Renamed all scripts to use hyphenated descriptive names (e.g., `pbuild` → `build`, `pname` → `plugin-name`)

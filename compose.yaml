@@ -2,7 +2,7 @@ name: devworkspace_generic
 services:
     terminal:
         build: .
-        image: publishpress/dev-workspace-terminal:generic-4.5.0
+        image: publishpress/dev-workspace-terminal:generic-5.0.0
         command: ["/bin/zsh", "-l"]
         stdin_open: true
         tty: true
