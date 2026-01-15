@@ -87,7 +87,8 @@ elif [[ "$PLUGIN_TYPE" == "GENERIC" ]]; then
     COLOR="%{$bg[green]%}"
 fi
 
-export PROMPT="%{$bg[magenta]%}%{$fg[white]%} 🐧 Dev-Workspace %{$reset_color%} $COLOR%{$fg[black]%} $PLUGIN_NAME $PLUGIN_TYPE %{$reset_color%}
+export PROMPT="
+%{$bg[magenta]%}%{$fg[white]%} 🐧 Dev-workspace v${DEV_WORKSPACE_VERSION} %{$reset_color%} $COLOR%{$fg[black]%} $PLUGIN_NAME $PLUGIN_TYPE %{$reset_color%}
 %{$terminfo[bold]$fg[blue]%}#%{$reset_color%} %(#,%{$bg[yellow]%}%{$fg[black]%}%n%{$reset_color%},%{$fg[cyan]%}%n) %{$reset_color%}@ %{$fg[green]%}%m %{$reset_color%}in %{$terminfo[bold]$fg[yellow]%}%~%{$reset_color%}${hg_info}${git_info}${svn_info}${venv_info} [%*] $exit_code
 %{$terminfo[bold]$fg[magenta]%}➜ %{$reset_color%}"
 
