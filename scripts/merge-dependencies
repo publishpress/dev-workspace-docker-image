@@ -3,7 +3,7 @@
 
 function show_help()
 {
-    echo "Usage: checkdep BASE_DIR NAMESPACE/PLUGIN_NAME\n";
+    echo "Usage: merge-dependencies BASE_DIR NAMESPACE/PLUGIN_NAME\n";
     echo "Options:\n";
     echo "  -h, --help        Display this help message.\n";
     echo "  BASE_DIR          Specify the directory to search for files.\n";
@@ -30,7 +30,6 @@ if (empty($plugin)) {
     show_help();
     exit(1);
 }
-
 // Define file paths
 $sourceComposerPath = "$baseDir/vendor/$plugin/lib/composer.json";
 $destinationComposerPath = "$baseDir/composer.json";
@@ -55,30 +54,18 @@ $sourceComposerData = json_decode($sourceComposerContent, true);
 $destinationComposerContent = file_get_contents($destinationComposerPath);
 $destinationComposerData = json_decode($destinationComposerContent, true);
 
-// Flag to indicate if all requirements are present
-$allRequirementsPresent = true;
-$missedRequirements = [];
-
-// Check 'require' dependencies
+// Check and merge 'require' dependencies
 if (isset($sourceComposerData['require'])) {
     foreach ($sourceComposerData['require'] as $package => $version) {
-        if (!isset($destinationComposerData['require'][$package])) {
-            $missedRequirements[] = sprintf('"%s": %s', $package, $version);
-            $allRequirementsPresent = false;
-        }
+        $destinationComposerData['require'][$package] = $version;
     }
 }
 
-// Output the result
-if ($allRequirementsPresent) {
-    echo "All requirements from the source file are present in the destination file.\n";
-} else {
-    echo "Some requirements from the Free plugin are missing in the Pro plugin:\n";
-    foreach ($missedRequirements as $missedRequirement) {
-        echo sprintf("%s\n", $missedRequirement);
-    }
+// Sort the dependencies
+ksort($destinationComposerData['require']);
 
-    echo "\n";
-    echo "Please add the missing requirements running `composer fix:deps` and run `composer update` again.\n";
-    exit(1);
-}
+// Save the merged data back to the destination composer.json file
+$newComposerContent = json_encode($destinationComposerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+file_put_contents($destinationComposerPath, $newComposerContent);
+
+echo "Dependencies have been merged successfully.\n";

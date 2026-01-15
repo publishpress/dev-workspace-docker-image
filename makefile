@@ -57,17 +57,5 @@ slim: ## Create a slim version of the Docker image
 		--tag ${IMAGE_NAME}:slim-${IMAGE_TAG} \
 		--http-probe=false
 
-bump-patch: ## Bump patch version (e.g., 4.4.1 -> 4.4.2)
-	@$(call echo_colored,${TITLE_COLOR},"Bumping patch version...")
-	@./scripts/bump-version patch
-
-bump-minor: ## Bump minor version (e.g., 4.4.1 -> 4.5.0)
-	@$(call echo_colored,${TITLE_COLOR},"Bumping minor version...")
-	@./scripts/bump-version minor
-
-bump-major: ## Bump major version (e.g., 4.4.1 -> 5.0.0)
-	@$(call echo_colored,${TITLE_COLOR},"Bumping major version...")
-	@./scripts/bump-version major
-
 version: ## Display the current version
 	@echo $(VERSION)

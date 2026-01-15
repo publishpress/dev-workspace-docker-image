@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-echo "Dev-workspace version: $DEV_WORKSPACE_VERSION"

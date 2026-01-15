@@ -4,7 +4,7 @@
 
 # Show usage
 usage() {
-    echo "Usage: pdropbox [command] [source_path]"
+    echo "Usage: plugin-dropbox [command] [source_path]"
     echo ""
     echo "command: The command to execute."
     echo "         Default: The list command."
@@ -29,7 +29,7 @@ fi
 SOURCE_PATH=${2:-$(pwd)}
 COMMAND=${1:-list}
 DROPBOX_FOLDER="/"
-PLUGIN_ZIP_FILE=$(pzipfile)
+PLUGIN_ZIP_FILE=$(plugin-zipfile)
 PLUGIN_ZIP_FULL_PATH="${SOURCE_PATH}/dist/${PLUGIN_ZIP_FILE}"
 
 # List the files in the Dropbox folder.

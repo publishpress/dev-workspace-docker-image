@@ -3,7 +3,7 @@
 
 function show_help()
 {
-    echo "Usage: mergedep BASE_DIR NAMESPACE/PLUGIN_NAME\n";
+    echo "Usage: check-dependencies BASE_DIR NAMESPACE/PLUGIN_NAME\n";
     echo "Options:\n";
     echo "  -h, --help        Display this help message.\n";
     echo "  BASE_DIR          Specify the directory to search for files.\n";
@@ -17,19 +17,20 @@ if (in_array('-h', $argv) || in_array('--help', $argv)) {
     exit(0);
 }
 
-$baseDir = $argv[1];
+$baseDir = $argv[1] ?? '';
 if (empty($baseDir)) {
     echo "Error: Please provide a base dir.\n";
     show_help();
     exit(1);
 }
 
-$plugin = $argv[2];
+$plugin = $argv[2] ?? '';
 if (empty($plugin)) {
     echo "Error: Please provide a plugin name.\n";
     show_help();
     exit(1);
 }
+
 // Define file paths
 $sourceComposerPath = "$baseDir/vendor/$plugin/lib/composer.json";
 $destinationComposerPath = "$baseDir/composer.json";
@@ -54,18 +55,30 @@ $sourceComposerData = json_decode($sourceComposerContent, true);
 $destinationComposerContent = file_get_contents($destinationComposerPath);
 $destinationComposerData = json_decode($destinationComposerContent, true);
 
-// Check and merge 'require' dependencies
+// Flag to indicate if all requirements are present
+$allRequirementsPresent = true;
+$missedRequirements = [];
+
+// Check 'require' dependencies
 if (isset($sourceComposerData['require'])) {
     foreach ($sourceComposerData['require'] as $package => $version) {
-        $destinationComposerData['require'][$package] = $version;
+        if (!isset($destinationComposerData['require'][$package])) {
+            $missedRequirements[] = sprintf('"%s": %s', $package, $version);
+            $allRequirementsPresent = false;
+        }
     }
 }
 
-// Sort the dependencies
-ksort($destinationComposerData['require']);
+// Output the result
+if ($allRequirementsPresent) {
+    echo "All requirements from the source file are present in the destination file.\n";
+} else {
+    echo "Some requirements from the Free plugin are missing in the Pro plugin:\n";
+    foreach ($missedRequirements as $missedRequirement) {
+        echo sprintf("%s\n", $missedRequirement);
+    }
 
-// Save the merged data back to the destination composer.json file
-$newComposerContent = json_encode($destinationComposerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-file_put_contents($destinationComposerPath, $newComposerContent);
-
-echo "Dependencies have been merged successfully.\n";
+    echo "\n";
+    echo "Please add the missing requirements running `composer fix:deps` and run `composer update` again.\n";
+    exit(1);
+}

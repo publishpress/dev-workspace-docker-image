@@ -3,7 +3,7 @@
 
 function show_help()
 {
-    echo "Usage: longpath DIRECTORY [NUMBER_OF_PATHS]\n";
+    echo "Usage: find-long-paths DIRECTORY [NUMBER_OF_PATHS]\n";
     echo "Options:\n";
     echo "  -h, --help        Display this help message.\n";
     echo "  DIRECTORY         Specify the directory to search for files.\n";

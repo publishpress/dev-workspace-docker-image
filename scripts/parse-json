@@ -3,7 +3,7 @@
 # Script to parse JSON files and extract property values using jq.
 
 show_help() {
-    echo "Usage: parsejson <json_file_path> <property_path>"
+    echo "Usage: parse-json <json_file_path> <property_path>"
     echo ""
     echo "Arguments:"
     echo "  json_file_path    Path to the JSON file to parse"
@@ -21,7 +21,7 @@ fi
 
 # Check if required arguments are provided
 if [ $# -ne 2 ]; then
-    echo "Usage: parsejson <json_file_path> <property_path>"
+    echo "Usage: parse-json <json_file_path> <property_path>"
     exit 1
 fi
 

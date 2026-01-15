@@ -3,11 +3,11 @@
 # Script to get the plugin version.
 
 SOURCE_PATH=${1:-$(pwd)}
-PLUGIN_SLUG=$(pslug ${SOURCE_PATH})
+PLUGIN_SLUG=$(plugin-slug ${SOURCE_PATH})
 PLUGIN_FILE_PATH="${SOURCE_PATH}/${PLUGIN_SLUG}.php"
 
 usage() {
-    echo "Usage: pversion [source_path]"
+    echo "Usage: plugin-version [source_path]"
     echo "source_path: Path to the plugin source code. Default: Current directory."
 }
 

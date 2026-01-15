@@ -3,7 +3,7 @@
 /**
  * Display the IP address of the host machine.
  *
- * Usage: getip [-h]
+ * Usage: get-ip [-h]
  * Options:
  *  -h, --help    Display this help text.
  *

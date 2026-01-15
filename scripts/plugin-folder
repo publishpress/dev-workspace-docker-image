@@ -7,7 +7,7 @@ SOURCE_PATH=${1:-$(pwd)}
 
 # Show the usage information.
 usage() {
-    echo "Usage: pfolder [source_path]"
+    echo "Usage: plugin-folder [source_path]"
     echo ""
     echo "source_path: The path to the source code of the plugin."
     echo "             Default: The current directory."
@@ -28,4 +28,4 @@ if [ ! -f "${SOURCE_PATH}/composer.json" ]; then
 fi
 
 # Get the plugin name from the composer.json file.
-parsejson "${SOURCE_PATH}/composer.json" "extra.plugin-folder"
+parse-json "${SOURCE_PATH}/composer.json" "extra.plugin-folder"

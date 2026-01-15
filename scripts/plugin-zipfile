@@ -1,24 +1,23 @@
 #!/usr/bin/env bash
 
-# Script to get the plugin file name.
+# Script to get the plugin ZIP file name in the dist dir.
 
 # Set the SOURCE_PATH variable to the current directory or use the passed argument.
 SOURCE_PATH=${1:-$(pwd)}
-PLUGIN_SLUG=$(pslug ${SOURCE_PATH})
-PLUGIN_FILE_PATH="${SOURCE_PATH}/${PLUGIN_SLUG}.php"
 
 # Show the usage information.
 usage() {
-    echo "Usage: pfile [source_path]"
+    echo "Usage: plugin-zipfile [source_path]"
     echo ""
     echo "source_path: The path to the source code of the plugin."
     echo "             Default: The current directory."
 }
 
 # Check if the usage information should be displayed.
-if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
     usage
     exit 0
 fi
 
-echo $PLUGIN_FILE_PATH
+# Output the ZIP file name
+echo "$(plugin-slug)-$(plugin-version).zip"
