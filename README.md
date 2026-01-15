@@ -36,9 +36,9 @@ git clone https://github.com/publishpress/PublishPress-Future.git /project
 
 ## Dropbox Integration
 
-You can use the command `pdropbox` (based on `droxul`) to upload built packages to Dropbox.
+You can use the command `plugin-dropbox` (or `pdropbox` for backward compatibility, based on `droxul`) to upload built packages to Dropbox.
 It requires create a Dropbox App and generate an access token. You can easily do this by
-running `pdropbox` the first time and following the instructions.
+running `plugin-dropbox` (or `pdropbox`) the first time and following the instructions.
 
 The uploaded files will be available in the folder you select when creatin the Dropbox App, which can
 be an Scoped App (App Folder).
@@ -54,7 +54,7 @@ available in the next run.
 
 ### Unlinking Dropbox Account
 
-If you want to unlink your Dropbox account, you can run `pdropbox unlink`.
+If you want to unlink your Dropbox account, you can run `plugin-dropbox unlink` (or `pdropbox unlink` for backward compatibility).
 
 ### More Information
 
@@ -64,22 +64,36 @@ You can find more information about the `droxul` command in the [official reposi
 
 The following commands are available in the image:
 
+### Main Commands (Recommended)
+
 - `composer` - PHP dependency manager
 - `wp` - WordPress CLI
-- `checkdep` - Check dependencies between free and pro plugins
-- `ghlogin` - Script to set Github token and login user using Github CLI
-- `longpath` - Script to list the logest paths in the plugin
-- `mergedep` - Script to merge dependencies from free plugin into pro plugin
-- `parsejson` - a script to parse JSON files and retrieve the value of a key
-- `pbuild` - Build the plugin package
-- `pdropbox` - Dropbox uploader
-- `pfile` - Script to get the file name of the plugin
-- `pfolder` - Script to get the folder name of the plugin, where it is installed in WordPress
-- `pname` - Script to get the plugin name
-- `pslug` - Script to get the plugin slug
-- `pversion` - Script to get the plugin version
-- `pzipfile` - Script to get the plugin zip file name
-- `version` - Show the version of the dev-workspace
+- `plugin-build` - Build the plugin package (main build command)
+- `plugin-name` - Get the plugin name from composer.json
+- `plugin-slug` - Get the plugin slug from composer.json
+- `plugin-folder` - Get the plugin folder name from composer.json
+- `plugin-version` - Get the plugin version
+- `plugin-zipfile` - Get the plugin zip file name
+- `plugin-file` - Get the plugin file path
+- `plugin-dropbox` - Dropbox uploader for plugin packages
+- `plugin-tests` - Run plugin tests
+- `check-dependencies` - Check dependencies between free and pro plugins
+- `merge-dependencies` - Merge dependencies from free plugin into pro plugin
+- `parse-json` - Parse JSON files and retrieve the value of a key
+- `find-long-paths` - List the longest paths in the plugin
+- `github-login` - Set Github token and login user using Github CLI
+- `get-ip` - Get the IP address of the host machine
+- `workspace-version` - Show the version of the dev-workspace
+- `test-bootstrap` - Bootstrap plugin files into test container volume
+
+### Deprecated Commands (Backward Compatibility)
+
+All old command names are still available in `scripts/deprecated-scripts/` for backward compatibility:
+- `pbuild`, `pname`, `pslug`, `pfolder`, `pversion`, `pzipfile`, `pfile`, `pdropbox`
+- `checkdep`, `mergedep`, `parsejson`, `longpath`, `ghlogin`, `getip`, `version`
+- `pptests`, `testsbootstrap`
+
+**Note**: While deprecated commands continue to work, new scripts should use the hyphenated command names above.
 
 ## Tools available
 

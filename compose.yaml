@@ -12,3 +12,5 @@ services:
             - PLUGIN_TYPE=${PLUGIN_TYPE:-GENERIC}
         volumes:
             - ./tests:/tests
+            - ./tests/fake-plugin:/project
+            - ./scripts:/scripts

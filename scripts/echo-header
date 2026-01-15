@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Script to display the formatted plugin builder header
+# Requires: echo-box-line, workspace-version, plugin-name, plugin-version, plugin-slug, plugin-folder in PATH
+
+show_help() {
+    echo "Usage: echo-header"
+    echo ""
+    echo "Example:"
+    echo "echo-header"
+    echo ""
+}
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    show_help
+    exit 0
+fi
+
+echo "PUBLISHPRESS PLUGIN BUILDER - $(workspace-version)"
+echo-separator
+echo "      __"
+echo "    .' o)=-     Plugin name: $(plugin-name)"
+echo "    /.-.'       Plugin slug: $(plugin-slug)"
+echo "  ///  |\\       Plugin folder: $(plugin-folder)"
+echo "   ||  |'       Plugin version: $(plugin-version)"
+echo " _,:|_/_        "
+echo ""

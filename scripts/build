@@ -1,0 +1,195 @@
+#!/usr/bin/env bash
+
+# Script to build a plugin and create a zip file from source code.
+
+# Enable pipefail so pipelines return the exit code of the first failing command
+set -o pipefail
+
+start_time=$(date +%s)
+
+command=${1}
+source_path=$(pwd)
+dist_path="${source_path}/dist"
+cols=$(terminal-cols)
+
+plugin_name=$(plugin-name)
+plugin_slug=$(plugin-slug)
+plugin_folder=$(plugin-folder)
+plugin_version=$(plugin-version)
+tmp_build_dir="${dist_path}/${plugin_folder}"
+tmp_internal_vendor_dir="${tmp_build_dir}/lib"
+
+# Utility scripts are in PATH, call them directly
+
+# Function to display help text
+show_help() {
+    echo "Usage: build [command]"
+    echo "Commands:"
+    echo "  dir          Build the plugin to the dist directory."
+    echo "  zip          Build the plugin and create a zip file."
+    echo "  clean        Clean the dist directory."
+    echo "  version      Get the plugin version."
+    echo ""
+    echo "Options:"
+    echo "  -h, --help   Show this help message."
+    echo "  HIDE_HEADER  Set this environment variable to '1' to hide the header when running the script."
+    echo "               HIDE_HEADER=1 build build"
+}
+
+# Check if user wants to see help or no command is provided
+if [[ $1 == "-h" || $1 == "--help" || -z "$1" ]]; then
+    echo-header
+    echo ""
+    show_help
+    exit 0
+fi
+
+if [ "${HIDE_HEADER}" != "1" ]; then
+    echo-header
+fi
+
+show_elapsed_time() {
+    show-time ${start_time}
+}
+
+# Run a command with indented output (preserves colors)
+# Usage: run_indented <exit_code> <command> [args...]
+run_indented() {
+    echo ""
+    local exit_code=$1
+    shift
+    "$@" 2>&1 | while IFS= read -r line; do echo "│ $line"; done || exit $exit_code
+    echo ""
+}
+
+command_dir() {
+    echo-command-header "Cleaning dist directory"
+    clean-dist ${tmp_build_dir}
+
+    echo-command-header "Building plugin to dist directory"
+
+    echo-step "Copying plugin files to the dist dir filtering the files listed on .rsync-filters-pre-build"
+    mkdir -p "${tmp_build_dir}" || exit 999
+    rsync -r -f 'merge .rsync-filters-pre-build' "${source_path}/" "${tmp_build_dir}" || exit 1000
+
+    echo-step "Updating dependencies on ${tmp_build_dir}/vendor."
+    echo ""
+    run_indented 1002 composer install --no-dev --ansi --working-dir="${tmp_build_dir}"
+
+    if [ -d "${tmp_internal_vendor_dir}" ]; then
+        echo-step "Dumping Composer autoload on ${tmp_internal_vendor_dir}/vendor"
+        echo ""
+        run_indented 1003 composer dumpautoload -o --classmap-authoritative --ansi --working-dir="${tmp_internal_vendor_dir}"
+    fi
+
+    echo-step "Removing files listed on .rsync-filters-post-build"
+    rsync -r -f 'merge .rsync-filters-post-build' "${tmp_build_dir}/" "${tmp_build_dir}-tmp" || exit 1004
+    rm -rf "${tmp_build_dir}" || exit 1005
+
+    echo-command-header "Moving the temporary build directory to the final build directory"
+
+    echo-step "Moving to ${tmp_build_dir}"
+    mv "${tmp_build_dir}-tmp" "${tmp_build_dir}" || exit 1006
+
+    echo-command-header "Verifying the build directory ${tmp_build_dir}"
+    if [ ! -d "${tmp_build_dir}" ]; then
+        echo-error "Build directory ${tmp_build_dir} does not exist"
+        exit 1007
+    else
+        echo-step "Asserting that build directory ${tmp_build_dir} exists"
+        echo-step "Listing the build directory ${tmp_build_dir}"
+        echo ""
+        run_indented 1007 ls -la "${tmp_build_dir}"
+    fi
+}
+
+command_zip() {
+    echo-command-header "Packaging plugin directory into zip archive"
+
+    zip_filename=$(plugin-zipfile ${source_path})
+    zip_path="${dist_path}/${zip_filename}"
+
+    echo-step "Removing old zip file on ${zip_path}, if exists"
+    rm -f "${zip_path}" || exit 1
+    pushd "${dist_path}" >/dev/null 2>&1 || exit 2
+
+    echo-step "Normalizing file permissions on ${plugin_folder}"
+    find ./${plugin_folder} -type f -exec chmod 644 {} \;
+    find ./${plugin_folder} -type d -exec chmod 755 {} \;
+
+    echo-step "Creating the zip file on ${zip_path} with normalized permissions"
+    zip -qr "${zip_path}" ./${plugin_folder} || exit 3
+    popd >/dev/null 2>&1 || exit 4
+
+    echo-command-header "Verifying the zip file ${zip_path}"
+    if [ ! -f "${zip_path}" ]; then
+        echo-error "Zip file ${zip_path} does not exist"
+        exit 1008
+    else
+        echo-step "Asserting that zip file ${zip_path} exists"
+        echo-step "Listing the zip file ${zip_path}"
+        echo ""
+        run_indented 1008 ls -la "${zip_path}"
+    fi
+}
+
+case "${command}" in
+"dir")
+    command_dir
+
+    echo-separator
+    show_elapsed_time
+    echo ""
+
+    echo "🎉" " Executed successfully!"
+    echo ""
+    exit 0
+    ;;
+"zip")
+    command_dir
+    command_zip
+
+    echo-separator
+    show_elapsed_time
+    echo ""
+
+    echo "🎉" " Executed successfully!"
+    echo ""
+    exit 0
+    ;;
+"clean")
+    echo-command-header "Cleaning dist directory"
+    clean-dist ${tmp_build_dir}
+
+    echo-separator
+    show_elapsed_time
+    echo ""
+
+    echo "🎉" " Executed successfully!"
+    echo ""
+    exit 0
+    ;;
+"version")
+    echo-command-header "Getting plugin version"
+    echo "${plugin_version}" > version.txt
+
+    echo-separator
+    show_elapsed_time
+    echo ""
+
+    echo "🎉" " Executed successfully!"
+    echo ""
+    exit 0
+    ;;
+*)
+    echo-error "invalid option ${command}"
+    echo-separator
+    echo ""
+    show_help
+    show_elapsed_time
+    echo ""
+    echo "⚠️  Error: Command '${command}' failed or is invalid. Please check your input and try again."
+    echo ""
+    exit 1
+    ;;
+esac

@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased]
+
+- **Refactoring**: Modularized `pbuild` script into individual utility scripts for better maintainability and reusability
+- **Enhancement**: Renamed all scripts to use hyphenated descriptive names (e.g., `pbuild` → `plugin-build`, `pname` → `plugin-name`)
+- **Enhancement**: Created modular utility scripts for UI functions (`echo-step.sh`, `echo-success.sh`, etc.) and build functions (`clean-dist.sh`, `build-to-dir.sh`, `pack-built-dir.sh`)
+- **Backward Compatibility**: All old script names are maintained in `scripts/deprecated-scripts/` directory as wrappers
+- **Enhancement**: Updated PATH to include `deprecated-scripts/` directory for seamless backward compatibility
+- **Documentation**: Updated README.md with new command names and migration guide
+
 ## [4.4.4] 14 January, 2026
 
 - Fix permissions on files and folders inside the built package. Command `pbuild` updated to 1.4.3.

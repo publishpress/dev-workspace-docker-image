@@ -1,0 +1,11 @@
++ **
+- .git/
+- .gitignore
+- node_modules/
+- tests/
+- dist/
+- .env
+- .env.local
+- *.log
+- .rsync-filters-pre-build
+- .rsync-filters-post-build
