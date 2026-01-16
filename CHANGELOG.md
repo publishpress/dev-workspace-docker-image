@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.0.1] 15 Jan, 2026
+
+- **Enhancement**: Add human readeable file sizes to the `ls` commands while building packages
+- **Enhancement**: Moved the definition of the DEV_WORKSPACE_VERSION variable to the compose file, optimizing build runtime when updating the version
+
 ## [5.0.0] 15 Jan, 2026
 
 - **Refactoring**: Modularized `pbuild` script into individual utility scripts for better maintainability and reusability
