@@ -7,17 +7,10 @@ IMAGE_TAG_FULL := generic-$(FULL_VERSION)
 IMAGE_TAG_MAJOR := generic-$(MAJOR_VERSION)
 IMAGE_TAG_MINOR := generic-$(MINOR_VERSION)
 PLATFORMS := linux/amd64,linux/arm64
-TITLE_COLOR := \033[1;33m
-SUCCESS_COLOR := \033[1;32m
-DEFAULT_COLOR := \033[0m
 
 .PHONY: help build build-provenance push bootstrap slim version
 
 all: help
-
-define echo_colored
-	@echo -e "\n$(1)$(2)${DEFAULT_COLOR}\n"
-endef
 
 define build
 	docker compose -f compose.yaml build
@@ -45,27 +38,28 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 build: ## Build the Docker image
-	@$(call echo_colored,${TITLE_COLOR},"Building the image...")
+	@echo "Building the image..."
 	@$(call build)
-	$(call echo_colored,${SUCCESS_COLOR},"Image built successfully!")
+	@echo "Image built successfully!"
 
 build-provenance: ## Build the Docker image with provenance attestations
-	@$(call echo_colored,${TITLE_COLOR},"Building the image with provenance attestations...")
+	@echo "Building the image with provenance attestations..."
 	docker buildx build --platform ${PLATFORMS} --provenance=mode=max \
 		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache \
 		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache,mode=max \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR} \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}.${MINOR_VERSION} \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_FULL} .
-	$(call echo_colored,${SUCCESS_COLOR},"Image built with provenance attestations successfully!")
+	@echo "Image built with provenance attestations successfully!"
 
 push: ## Push the Docker image to the registry
-	@$(call echo_colored,${TITLE_COLOR},"Pushing the image...")
+	@echo "Pushing the image..."
 	@$(call push)
 
 bootstrap: ## Install required tools
-	@$(call echo_colored,${TITLE_COLOR},"Bootstrapping the environment...")
+	@echo "Bootstrapping the environment..."
 	@$(call bootstrap)
+	@echo "Environment bootstrapped successfully!"
 
 slim: ## Create a slim version of the Docker image
 	@docker-slim build \
