@@ -27,6 +27,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
-      - name: Build Generic Dev-workspace Image
+      - name: Build Generic
         run: |
           cd $GITHUB_WORKSPACE/generic && make push
