@@ -25,6 +25,8 @@ endef
 
 define push
 	docker buildx build --platform ${PLATFORMS} --provenance=mode=max --push \
+		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache \
+		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache,mode=max \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR} \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}.${MINOR_VERSION} \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_FULL} .
@@ -47,7 +49,10 @@ build: ## Build the Docker image
 
 build-provenance: ## Build the Docker image with provenance attestations
 	@$(call echo_colored,${TITLE_COLOR},"Building the image with provenance attestations...")
-	docker buildx build --platform ${PLATFORMS} --provenance=mode=max -t ${IMAGE_NAME}:${IMAGE_TAG_FULL} .
+	docker buildx build --platform ${PLATFORMS} --provenance=mode=max \
+		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache \
+		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache,mode=max \
+		-t ${IMAGE_NAME}:${IMAGE_TAG_FULL} .
 	$(call echo_colored,${SUCCESS_COLOR},"Image built with provenance attestations successfully!")
 
 push: ## Push the Docker image to the registry
