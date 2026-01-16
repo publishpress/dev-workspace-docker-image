@@ -25,9 +25,9 @@ endef
 
 define push
 	docker buildx build --platform ${PLATFORMS} --provenance=mode=max --push \
-		-t ${IMAGE_NAME}:${IMAGE_TAG_FULL} \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR} \
-		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}.${MINOR_VERSION} .
+		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}.${MINOR_VERSION} \
+		-t ${IMAGE_NAME}:${IMAGE_TAG_FULL} .
 endef
 
 define bootstrap
