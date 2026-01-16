@@ -99,7 +99,7 @@ command_dir() {
         echo-step "Asserting that build directory ${tmp_build_dir} exists"
         echo-step "Listing the build directory ${tmp_build_dir}"
         echo ""
-        run_indented 1007 ls -la "${tmp_build_dir}"
+        run_indented 1007 ls -lha "${tmp_build_dir}"
     fi
 }
 
@@ -129,7 +129,7 @@ command_zip() {
         echo-step "Asserting that zip file ${zip_path} exists"
         echo-step "Listing the zip file ${zip_path}"
         echo ""
-        run_indented 1008 ls -la "${zip_path}"
+        run_indented 1008 ls -lha "${zip_path}"
     fi
 }
 
