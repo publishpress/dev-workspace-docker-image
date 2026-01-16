@@ -1,7 +1,7 @@
 name: Deploy Dev-workspace Images
 on:
   release:
-    types: [published]
+    types: [created, published]
 
   workflow_call:
 
