@@ -11,7 +11,7 @@ TITLE_COLOR := \033[1;33m
 SUCCESS_COLOR := \033[1;32m
 DEFAULT_COLOR := \033[0m
 
-.PHONY: help build push bootstrap slim bump-patch bump-minor bump-major version
+.PHONY: help build build-provenance push bootstrap slim version
 
 all: help
 
