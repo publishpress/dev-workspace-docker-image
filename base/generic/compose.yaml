@@ -2,15 +2,11 @@ name: devworkspace_generic
 services:
     terminal:
         build: .
-        image: publishpress/dev-workspace-terminal:generic-5.0.1
+        image: publishpress/dev-workspace-terminal:generic-5.1.0
         command: ["/bin/zsh", "-l"]
         stdin_open: true
         tty: true
         working_dir: "/project"
-        environment:
-            - DEV_WORKSPACE_VERSION=5.0.1
-            - PLUGIN_NAME=${PLUGIN_NAME:-Base Image}
-            - PLUGIN_TYPE=${PLUGIN_TYPE:-GENERIC}
         volumes:
             - ./tests:/tests
             - ./tests/fake-plugin:/project

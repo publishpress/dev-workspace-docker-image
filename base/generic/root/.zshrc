@@ -1,5 +1,17 @@
+# Set default values for PLUGIN_NAME and PLUGIN_TYPE if not set
+export DEV_WORKSPACE_VERSION=5.1.0
+export PLUGIN_NAME=${PLUGIN_NAME:-"Base Image"}
+export PLUGIN_TYPE=${PLUGIN_TYPE:-"GENERIC"}
+
+export LANG='en_US.UTF-8'
+export LANGUAGE='en_US:en'
+export LC_ALL='en_US.UTF-8'
+[ -z "xterm-256color" ] && export TERM=xterm
+
 # If you come from bash you might have to change your $PATH.
-export PATH=/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:$PATH
+export PATH=/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/scripts/deprecated-scripts:$PATH
+
+git config --global --add safe.directory /project
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -74,10 +86,6 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PROJECT_PATH="/project"
 
-# Set default values for PLUGIN_NAME and PLUGIN_TYPE if not set
-export PLUGIN_NAME=${PLUGIN_NAME:-"Base Image"}
-export PLUGIN_TYPE=${PLUGIN_TYPE:-"GENERIC"}
-
 # Set the prompt color based on PLUGIN_TYPE
 if [[ "$PLUGIN_TYPE" == "PRO" ]]; then
     COLOR="%{$bg[yellow]%}"
@@ -118,8 +126,6 @@ fi
 if [[ -n $DROPBOX_ACCESS_TOKEN ]]; then
     echo "OAUTH_ACCESS_TOKEN=${DROPBOX_ACCESS_TOKEN}" > /root/.dropbox_uploader
 fi
-
-export PATH="/scripts:$PATH"
 
 if [[ -f ~/.zshrc.local ]]; then
     source ~/.zshrc.local

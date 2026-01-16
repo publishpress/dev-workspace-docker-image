@@ -38,4 +38,4 @@ jobs:
 
       - name: Build Generic
         run: |
-          cd $GITHUB_WORKSPACE/generic && make push
+          cd $GITHUB_WORKSPACE/base/generic && make push
