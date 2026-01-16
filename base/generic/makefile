@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 IMAGE_NAME := publishpress/dev-workspace-terminal
-FULL_VERSION := $(shell grep "DEV_WORKSPACE_VERSION=" compose.yaml | sed 's/.*DEV_WORKSPACE_VERSION=\([0-9]*\.[0-9]*\.[0-9]*\).*/\1/')
+FULL_VERSION := $(shell grep "DEV_WORKSPACE_VERSION=" Dockerfile | sed 's/.*DEV_WORKSPACE_VERSION=\([0-9]*\.[0-9]*\.[0-9]*\).*/\1/')
 MAJOR_VERSION := $(shell echo $(FULL_VERSION) | cut -d. -f1)
 MINOR_VERSION := $(shell echo $(FULL_VERSION) | cut -d. -f2)
 IMAGE_TAG_FULL := generic-$(FULL_VERSION)
@@ -21,6 +21,8 @@ endef
 
 define build
 	docker compose -f compose.yaml build
+	docker tag ${IMAGE_NAME}:${IMAGE_TAG_FULL} ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}
+	docker tag ${IMAGE_NAME}:${IMAGE_TAG_FULL} ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}.${MINOR_VERSION}
 endef
 
 define push
