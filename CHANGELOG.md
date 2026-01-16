@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.1.0] 16 Jan, 2026
+
+- **Enhancement**: Refactored the image structure for faster building
+
 ## [5.0.1] 15 Jan, 2026
 
 - **Enhancement**: Add human readeable file sizes to the `ls` commands while building packages
