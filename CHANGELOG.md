@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.1.1] 21 Jan, 2026
+
+- **Enhancement**: Added Dockerfiles and makefiles for all plugin workspaces, enabling individual workspace image builds
+- **Enhancement**: Added `.zshrc.local` configuration files for all workspaces to customize environment variables per plugin
+- **Enhancement**: Simplified the generic image build script in `base/generic/makefile` for better maintainability
+- **Enhancement**: Added root-level makefile and `push-all.sh` script to streamline image deployment process
+- **Enhancement**: Updated `push-all.sh` script to use new workspace paths for plugin directories
+- **Enhancement**: Adjusted environment variables and prompt settings in `.zshrc` files across all workspaces for consistent versioning
+- **Enhancement**: Removed echo statements for PLUGIN_TYPE and PLUGIN_NAME from `.zshrc` to streamline configuration and reduce output clutter
+
 ## [5.1.0] 16 Jan, 2026
 
 - **Enhancement**: Refactored the image structure for faster building
