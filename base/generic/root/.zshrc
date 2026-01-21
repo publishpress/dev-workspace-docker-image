@@ -118,9 +118,6 @@ if [[ -f ~/.zshrc.local ]]; then
     echo "🎉 Loaded local zshrc from ~/.zshrc.local"
 fi
 
-echo "PLUGIN_TYPE: $PLUGIN_TYPE"
-echo "PLUGIN_NAME: $PLUGIN_NAME"
-
 # Set the prompt color based on PLUGIN_TYPE
 if [[ "$PLUGIN_TYPE" == "PRO" ]]; then
     COLOR="%{$bg[yellow]%}"
