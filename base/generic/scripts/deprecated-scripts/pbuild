@@ -1,2 +1,14 @@
 #!/usr/bin/env bash
-exec /scripts/plugin-build "$@"
+echo-warning "The 'pbuild' command is deprecated. Please use 'build' instead."
+
+if [ "$1" = "build" ]; then
+    exec /scripts/build zip "$@"
+elif [ "$1" = "build-dir" ]; then
+    exec /scripts/build dir "$@"
+elif [ "$1" = "clean" ]; then
+    exec /scripts/build clean "$@"
+elif [ "$1" = "version" ]; then
+    exec /scripts/build version "$@"
+else
+    exec /scripts/plugin-build "$@"
+fi
