@@ -135,6 +135,7 @@ command_zip() {
 
 case "${command}" in
 "dir")
+    set-git-config ${source_path}
     command_dir
 
     echo-separator
@@ -146,6 +147,7 @@ case "${command}" in
     exit 0
     ;;
 "zip")
+    set-git-config ${source_path}
     command_dir
     command_zip
 

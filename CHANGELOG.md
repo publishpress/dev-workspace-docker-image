@@ -3,6 +3,7 @@
 [5.1.2] - 22 Jan, 2026
 
 - Fixed: Fixed the deprecated `pbuild` command adding support for using the correct params of `build`.
+- Fixed: Fixed ownership issue from git in the src folder when building from Github.
 - Changed: Add deprecation warning to `pbuild`.
 
 [5.1.1] - 21 Jan, 2026

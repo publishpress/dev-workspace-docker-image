@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Script to set the Git config for a given directory
+# Requires: echo-step in PATH
+# Requires: git
+
+echo-step "Setting Git config for $1"
+echo ""
+git config --global --add safe.directory "$1"
