@@ -4,6 +4,11 @@
 # Requires: echo-step in PATH
 # Requires: git
 
-echo-step "Setting Git config for $1"
-echo ""
-git config --global --add safe.directory "$1"
+# Check if the directory is already in the safe.directory list
+if git config --global --get-all safe.directory | grep -Fxq "$1"; then
+    echo-step "Git config for $1 already exists, skipping"
+else
+    echo-step "Setting Git config for $1"
+    echo ""
+    git config --global --add safe.directory "$1"
+fi

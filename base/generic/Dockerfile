@@ -70,6 +70,10 @@ RUN --mount=type=cache,target=/var/cache/apk \
 COPY scripts/ /scripts/
 RUN find /scripts -type f -exec chmod +x {} +;
 
+# Configure git safe.directory for /project during build time
+# This ensures the config is baked into the image, not just set at runtime
+RUN git config --global --add safe.directory /project || true
+
 # Copy custom .zshrc after zsh installation
 COPY root/.zshrc /root/.zshrc
 

@@ -11,8 +11,6 @@ export LC_ALL='en_US.UTF-8'
 # If you come from bash you might have to change your $PATH.
 export PATH=/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/scripts/deprecated-scripts:$PATH
 
-git config --global --add safe.directory /project
-
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
