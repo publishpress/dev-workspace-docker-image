@@ -20,4 +20,4 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
 fi
 
 # Output the ZIP file name
-echo "$(plugin-slug)-$(plugin-version).zip"
+echo "$(plugin-name)-$(plugin-version).zip"

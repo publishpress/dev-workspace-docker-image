@@ -1,5 +1,9 @@
 # Changelog
 
+[5.1.3] - 27 Jan, 2026
+
+- Fixed: Fix plugin zipfile naming by changing from plugin-slug to plugin-name.
+
 [5.1.2] - 22 Jan, 2026
 
 - Fixed: Fixed the deprecated `pbuild` command adding support for using the correct params of `build`.
