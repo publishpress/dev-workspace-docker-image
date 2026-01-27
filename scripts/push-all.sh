@@ -26,6 +26,7 @@ DIRECTORIES=(
     "workspaces/publishpress-future"
     "workspaces/publishpress-future-pro"
     "workspaces/publishpress-hub"
+    "workspaces/publishpress-hub-statistics"
     "workspaces/publishpress-permissions"
     "workspaces/publishpress-permissions-pro"
     "workspaces/publishpress-planner"
