@@ -79,7 +79,7 @@ COPY root/.zshrc /root/.zshrc
 
 ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/scripts/deprecated-scripts:${PATH}"
 
-ENV DEV_WORKSPACE_VERSION=5.1.2
+ENV DEV_WORKSPACE_VERSION=5.1.3
 
 VOLUME /project
 WORKDIR /project
