@@ -15,6 +15,7 @@ DIRECTORIES=(
     "workspaces/library-wordpress-edd-license"
     "workspaces/library-wordpress-reviews"
     "workspaces/library-wordpress-version-notices"
+    "workspaces/maintenance-scripts"
     "workspaces/publishpress-authors"
     "workspaces/publishpress-authors-pro"
     "workspaces/publishpress-blocks"
