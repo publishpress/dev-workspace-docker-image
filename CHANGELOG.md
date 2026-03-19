@@ -1,5 +1,9 @@
 # Changelog
 
+[5.2.0] - 13 Mar, 2026
+
+- Added: Add GitHub CLI client.
+
 [5.1.3] - 27 Jan, 2026
 
 - Fixed: Fix plugin zipfile naming by changing from plugin-slug to plugin-name.
