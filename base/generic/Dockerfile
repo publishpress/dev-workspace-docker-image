@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/var/cache/apk \
     apk add --no-cache \
         php-iconv php-pecl-yaml nodejs npm yarn bash rsync zsh gettext zip unzip \
         git jq ncurses libpng libjpeg libzip libxml2 libmcrypt libcurl libwebp \
-        freetype yaml make 7zip ncurses bats; \
+        freetype yaml make 7zip ncurses bats github-cli; \
     \
     # Configure and install PHP extensions
     docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
