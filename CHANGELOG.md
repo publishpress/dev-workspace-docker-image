@@ -1,5 +1,9 @@
 # Changelog
 
+[6.0.0] - 31 Mar, 2026
+
+- Changed: Removed scripts from the generic image. The scripts are now in the dev-worspace composer package.
+
 [5.2.0] - 13 Mar, 2026
 
 - Added: Add GitHub CLI client.
