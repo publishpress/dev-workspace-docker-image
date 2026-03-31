@@ -1,5 +1,5 @@
 # Set default values for PLUGIN_NAME and PLUGIN_TYPE if not set
-export DEV_WORKSPACE_VERSION=5.2.0
+export DEV_WORKSPACE_VERSION=6.0.0
 export PLUGIN_NAME=${PLUGIN_NAME:-"Base Image"}
 export PLUGIN_TYPE=${PLUGIN_TYPE:-"FREE"}
 
