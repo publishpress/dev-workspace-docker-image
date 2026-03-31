@@ -2,7 +2,7 @@ ARG NODE_VERSION=25
 
 FROM node:$NODE_VERSION-alpine AS node
 
-FROM publishpress/dev-workspace-terminal:generic-5
+FROM publishpress/dev-workspace-terminal:generic-6
 
 COPY --from=node /usr/lib /usr/lib
 COPY --from=node /usr/local/share /usr/local/share
