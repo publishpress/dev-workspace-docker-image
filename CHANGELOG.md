@@ -1,5 +1,9 @@
 # Changelog
 
+[6.0.1] - 29 Apr, 2026
+
+- Changed: Removed the DEV_WORKSPACE_VERSION environment variable. This is now the responsibility of the dev-workspace composer library to define.
+
 [6.0.0] - 31 Mar, 2026
 
 - Changed: Removed scripts from the generic image. The scripts are now in the dev-worspace composer package.

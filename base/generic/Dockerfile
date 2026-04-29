@@ -79,7 +79,6 @@ COPY root/.zshrc /root/.zshrc
 
 ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/scripts/deprecated-scripts:${PATH}"
 
-ENV DEV_WORKSPACE_VERSION=6.0.0
 ENV INSIDE_DEV_CONTAINER=true
 
 VOLUME /project
