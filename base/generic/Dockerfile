@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/var/cache/apk \
     apk add --no-cache \
         php-iconv php-pecl-yaml nodejs npm yarn bash rsync zsh gettext zip unzip \
         git jq ncurses libpng libjpeg libzip libxml2 libmcrypt libcurl libwebp \
-        freetype yaml make 7zip ncurses bats; \
+        freetype yaml make 7zip ncurses bats github-cli; \
     \
     # Configure and install PHP extensions
     docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
@@ -79,7 +79,7 @@ COPY root/.zshrc /root/.zshrc
 
 ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/scripts/deprecated-scripts:${PATH}"
 
-ENV DEV_WORKSPACE_VERSION=5.1.3
+ENV INSIDE_DEV_CONTAINER=true
 
 VOLUME /project
 WORKDIR /project

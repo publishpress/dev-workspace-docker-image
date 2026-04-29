@@ -5,15 +5,21 @@
 To build the image, you can run the following command:
 
 ```bash
-./build
+make build
 ```
 
 ## Building and pushing to Docker Hub
 
-To build and push the image to Docker Hub, you can run the following command:
+To build and push the image to Docker Hub, you can enter each workspace or base folders and run:
 
 ```bash
-./build-push
+make push
+```
+
+For pushing all the images in a row, you can run in the root dir:
+
+```bash
+make push-all
 ```
 
 ## Running
