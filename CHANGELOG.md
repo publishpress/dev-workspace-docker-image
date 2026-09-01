@@ -1,5 +1,14 @@
 # Changelog
 
+[6.0.2] - 1 Sep, 2026
+
+- Added: Centralized Docker build configuration in `make/docker.mk`, shared across all workspace and base makefiles
+- Added: `make bootstrap-buildx` target to create the `publishpress-multiarch` buildx builder for multi-platform builds
+- Added: `make build-local` target to build a single platform and load the image into the local Docker engine
+- Changed: `make build` now uses buildx to build for `linux/amd64` and `linux/arm64` by default, fixing failures on Linux with the default Docker driver
+- Changed: `make push` uses the `docker-container` buildx driver, enabling multi-platform pushes and registry cache export on Linux and macOS
+- Changed: Updated the WordPress base image to `wordpress:7.1-php8.5-apache`
+
 [6.0.1] - 29 Apr, 2026
 
 - Changed: Removed the DEV_WORKSPACE_VERSION environment variable. This is now the responsibility of the dev-workspace composer library to define.
