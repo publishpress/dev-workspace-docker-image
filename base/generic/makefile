@@ -6,9 +6,10 @@ MINOR_VERSION := $(shell echo $(FULL_VERSION) | cut -d. -f2)
 IMAGE_TAG_FULL := generic-$(FULL_VERSION)
 IMAGE_TAG_MAJOR := generic-$(MAJOR_VERSION)
 IMAGE_TAG_MINOR := generic-$(MINOR_VERSION)
-PLATFORMS := linux/amd64,linux/arm64
 
-.PHONY: help build build-provenance push bootstrap slim version
+include ../../make/docker.mk
+
+.PHONY: help build build-provenance push bootstrap bootstrap-buildx slim version
 
 all: help
 
@@ -19,7 +20,8 @@ define build
 endef
 
 define push
-	docker buildx build --platform ${PLATFORMS} --provenance=mode=max --push \
+	$(call ensure_buildx_builder)
+	docker buildx build --builder $(BUILDX_BUILDER) --platform $(PLATFORMS) --provenance=mode=max --push \
 		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache \
 		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache,mode=max \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR} \
@@ -44,7 +46,8 @@ build: ## Build the Docker image
 
 build-provenance: ## Build the Docker image with provenance attestations
 	@echo "Building the image with provenance attestations..."
-	docker buildx build --platform ${PLATFORMS} --provenance=mode=max \
+	$(call ensure_buildx_builder)
+	docker buildx build --builder $(BUILDX_BUILDER) --platform $(PLATFORMS) --provenance=mode=max \
 		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache \
 		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache,mode=max \
 		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR} \

@@ -1,21 +1,19 @@
 SHELL := /bin/bash
 IMAGE_NAME := publishpress/dev-workspace-terminal
 IMAGE_TAG := publishpress-shortlinks
-PLATFORMS := linux/amd64,linux/arm64
 
-.PHONY: help build push
+include ../../make/docker.mk
+
+.PHONY: help build build-local push bootstrap-buildx
 
 all: help
 
 define build
-	docker build --platform ${PLATFORMS} -t ${IMAGE_NAME}:${IMAGE_TAG} .
+	$(call docker_build)
 endef
 
 define push
-	docker buildx build --platform ${PLATFORMS} --provenance=mode=max --push \
-		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache \
-		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache,mode=max \
-		-t ${IMAGE_NAME}:${IMAGE_TAG} .
+	$(call docker_push)
 endef
 
 help:
