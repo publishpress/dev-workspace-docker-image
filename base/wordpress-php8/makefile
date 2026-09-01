@@ -1,4 +1,4 @@
-WORDPRESS_VERSION := 6.9
+WORDPRESS_VERSION := 7.1
 PHP_VERSION := 8.5
 SHELL := /bin/bash
 IMAGE_NAME := publishpress/dev-workspace-wordpress

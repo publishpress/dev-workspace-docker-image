@@ -1,4 +1,4 @@
-FROM wordpress:6.9-php8.5-apache
+FROM wordpress:7.1-php8.5-apache
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
