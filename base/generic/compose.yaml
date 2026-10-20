@@ -6,6 +6,9 @@ services:
         command: ["/bin/zsh", "-l"]
         stdin_open: true
         tty: true
+        environment:
+            HOST_UID: ${HOST_UID:-}
+            HOST_GID: ${HOST_GID:-}
         working_dir: "/project"
         volumes:
             - ./tests:/tests

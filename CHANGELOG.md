@@ -1,5 +1,9 @@
 # Changelog
 
+[7.0.0] - 20 Oct, 2026
+
+- Fixed: generic terminal image drops to the /project owner (or HOST_UID/HOST_GID) so build output is not root-owned.
+
 [6.0.2] - 1 Sep, 2026
 
 - Added: Centralized Docker build configuration in `make/docker.mk`, shared across all workspace and base makefiles

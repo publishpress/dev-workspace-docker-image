@@ -11,7 +11,11 @@ export LC_ALL='en_US.UTF-8'
 export PATH=/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/scripts/deprecated-scripts:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+if [ -d /opt/oh-my-zsh ]; then
+    export ZSH=/opt/oh-my-zsh
+else
+    export ZSH="$HOME/.oh-my-zsh"
+fi
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -105,9 +109,9 @@ if [[ -f $PROJECT_PATH/dev-workspace/cache/gh-token.txt ]]; then
      gh auth login --with-token <<< $GH_TOKEN
 fi
 
-# If the env var DROPBOX_ACCESS_TOKEN is set, write it to /root/.dropbox_uploader
+# If the env var DROPBOX_ACCESS_TOKEN is set, write it to the user home.
 if [[ -n $DROPBOX_ACCESS_TOKEN ]]; then
-    echo "OAUTH_ACCESS_TOKEN=${DROPBOX_ACCESS_TOKEN}" > /root/.dropbox_uploader
+    echo "OAUTH_ACCESS_TOKEN=${DROPBOX_ACCESS_TOKEN}" > "$HOME/.dropbox_uploader"
 fi
 
 if [[ -f ~/.zshrc.local ]]; then

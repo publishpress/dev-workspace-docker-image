@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/var/cache/apk \
     apk add --no-cache \
         php-iconv php-pecl-yaml nodejs npm yarn bash rsync zsh gettext zip unzip \
         git jq ncurses libpng libjpeg libzip libxml2 libmcrypt libcurl libwebp \
-        freetype yaml make 7zip ncurses bats github-cli; \
+        freetype yaml make 7zip ncurses bats github-cli su-exec; \
     \
     # Configure and install PHP extensions
     docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
@@ -57,9 +57,11 @@ RUN --mount=type=cache,target=/var/cache/apk \
     # Install zsh
     sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" -- \
         -t ys -p git -p asdf -p wp-cli; \
+    mv /root/.oh-my-zsh /opt/oh-my-zsh; \
+    chmod -R a+rX /opt/oh-my-zsh; \
     \
     # Create dirs
-    mkdir -p /project; \
+    mkdir -p /home/devuser /project; \
     \
     # Clean up
     apk del --no-network --purge .build-deps; \
@@ -70,9 +72,9 @@ RUN --mount=type=cache,target=/var/cache/apk \
 COPY scripts/ /scripts/
 RUN find /scripts -type f -exec chmod +x {} +;
 
-# Configure git safe.directory for /project during build time
-# This ensures the config is baked into the image, not just set at runtime
-RUN git config --global --add safe.directory /project || true
+# System config applies to every uid. A global config would live in /root
+# and be invisible after the entrypoint drops privileges.
+RUN git config --system --add safe.directory '*' || true
 
 # Copy custom .zshrc after zsh installation
 COPY root/.zshrc /root/.zshrc
@@ -83,3 +85,4 @@ ENV INSIDE_DEV_CONTAINER=true
 
 VOLUME /project
 WORKDIR /project
+ENTRYPOINT ["/scripts/entrypoint.sh"]
