@@ -5,7 +5,7 @@ FROM php:8.3-cli-alpine3.23
 ENV PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/root/.composer \
-    COMPOSER_VERSION=2.9.3 \
+    COMPOSER_VERSION=2.10.3 \
     PLUGIN_NAME="Generic" \
     PLUGIN_TYPE="FREE" \
     TERM=xterm-256color
