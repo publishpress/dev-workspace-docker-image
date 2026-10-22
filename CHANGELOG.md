@@ -5,6 +5,7 @@
 - Added: Node.js 26 image based on the optimized generic image.
 - Added: Corepack 0.36.0 to the Node.js 25 and 26 images, with Yarn 4 available per project while Yarn Classic 1.22.22 remains the default.
 - Added: Starship prompt with Bash as the default interactive shell (Zsh and Oh My Zsh removed; legacy `.zshrc.local` configuration still supported).
+- Added: PHP, Composer, Node.js, npm, and Yarn versions to the first line of the generic image Starship prompt, with command duration and Git status on the second line.
 - Changed: Rebuilt the Node.js 25 image without duplicate Node.js installations or cross-Alpine library overlays, reducing its size by 29.1%.
 - Changed: Rebuilt the generic image as a multi-stage PHP/Alpine image, reducing its size by 19.2% while retaining all development tools and PHP extensions.
 - Changed: Removed duplicate PHP packages, unnecessary libraries, build-only dependencies, PHP CGI, PHPDBG, and PHP source files from the runtime image.

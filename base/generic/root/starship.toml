@@ -1,7 +1,7 @@
 add_newline = false
 format = """
-[ Dev-workspace](bg:purple fg:white)${env_var.DEV_WORKSPACE_VERSION}[ ](bg:purple)${env_var.PLUGIN_NAME}${env_var.PLUGIN_TYPE}
-$username[@](bold white)$hostname [in](white) $directory$git_branch$git_status $time$status
+[ Dev-workspace](bg:purple fg:white)${env_var.DEV_WORKSPACE_VERSION}[ ](bg:purple)${env_var.PLUGIN_NAME}${env_var.PLUGIN_TYPE}${custom.php}${custom.composer}${custom.node}${custom.npm}${custom.yarn}
+$username[@](bold white)$hostname [in](white) $directory$git_branch$git_status$cmd_duration $time$status
 $character"""
 
 [env_var.DEV_WORKSPACE_VERSION]
@@ -35,10 +35,39 @@ symbol = "git:"
 [git_status]
 format = "([$all_status$ahead_behind](bold red))"
 
+[custom.php]
+command = "php -r 'echo PHP_VERSION;'"
+when = true
+format = " [php $output](bold purple)"
+
+[custom.composer]
+command = "composer --version | awk '{print $3}'"
+when = true
+format = " [composer $output](bold purple)"
+
+[custom.node]
+command = "node --version"
+when = true
+format = " [node $output](bold green)"
+
+[custom.npm]
+command = "npm --version"
+when = true
+format = " [npm $output](bold green)"
+
+[custom.yarn]
+command = "yarn --version"
+when = true
+format = " [yarn $output](bold green)"
+
 [time]
 disabled = false
 format = " [\\[$time\\]](dimmed white)"
 time_format = "%H:%M:%S"
+
+[cmd_duration]
+min_time = 0
+format = " [took $duration](dimmed white)"
 
 [status]
 disabled = false
