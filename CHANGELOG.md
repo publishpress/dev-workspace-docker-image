@@ -1,5 +1,13 @@
 # Changelog
 
+[Unreleased]
+
+- Added: Starship prompt with Bash as the default interactive shell.
+- Changed: Removed Zsh and Oh My Zsh while preserving legacy `.zshrc.local` workspace configuration.
+- Changed: Reduced the generic image size by removing duplicate PHP packages, unnecessary libraries, and build-only dependencies.
+- Changed: Replaced the full OpenSSH package with the client-only package.
+- Changed: Composer is copied from the pinned Composer 2.10.3 image.
+
 [7.0.0] - 20 Oct, 2026
 
 - Fixed: generic terminal image drops to the /project owner (or HOST_UID/HOST_GID) so build output is not root-owned.

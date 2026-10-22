@@ -1,0 +1,49 @@
+add_newline = false
+format = """
+[ Dev-workspace](bg:purple fg:white)${env_var.DEV_WORKSPACE_VERSION}[ ](bg:purple)${env_var.PLUGIN_NAME}${env_var.PLUGIN_TYPE}
+$username[@](bold white)$hostname [in](white) $directory$git_branch$git_status $time$status
+$character"""
+
+[env_var.DEV_WORKSPACE_VERSION]
+format = "[ v$env_value](bg:purple fg:white)"
+
+[env_var.PLUGIN_NAME]
+default = "Base Image"
+format = "[ $env_value](bg:cyan fg:black)"
+
+[env_var.PLUGIN_TYPE]
+default = "FREE"
+format = "[ $env_value ](bg:cyan fg:black)"
+
+[username]
+show_always = true
+format = "[$user](bold cyan)"
+
+[hostname]
+ssh_only = false
+format = "[$hostname](bold green)"
+
+[directory]
+format = "[$path](bold yellow)"
+truncation_length = 4
+truncate_to_repo = false
+
+[git_branch]
+format = " [$symbol$branch](bold purple)"
+symbol = "git:"
+
+[git_status]
+format = "([$all_status$ahead_behind](bold red))"
+
+[time]
+disabled = false
+format = " [\\[$time\\]](dimmed white)"
+time_format = "%H:%M:%S"
+
+[status]
+disabled = false
+format = " [exit $status](bold red)"
+
+[character]
+success_symbol = "[>](bold purple)"
+error_symbol = "[>](bold red)"

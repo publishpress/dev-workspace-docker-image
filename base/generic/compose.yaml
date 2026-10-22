@@ -2,8 +2,8 @@ name: devworkspace_generic
 services:
     terminal:
         build: .
-        image: publishpress/dev-workspace-terminal:generic-6.0.1
-        command: ["/bin/zsh", "-l"]
+        image: publishpress/dev-workspace-terminal:generic-8.0.0
+        command: ["/bin/bash", "-l"]
         stdin_open: true
         tty: true
         environment:

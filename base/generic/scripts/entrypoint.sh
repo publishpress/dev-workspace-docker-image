@@ -4,7 +4,7 @@ set -eu
 
 run() {
     if [ "$#" -eq 0 ]; then
-        exec /bin/zsh -l
+        exec /bin/bash -l
     fi
     exec "$@"
 }
@@ -37,17 +37,21 @@ if [ -z "$user_name" ]; then
         addgroup -g "$target_gid" "$group_name"
     fi
     user_name=devuser
-    adduser -D -u "$target_uid" -G "$group_name" -h /home/devuser -s /bin/zsh "$user_name"
+    adduser -D -u "$target_uid" -G "$group_name" -h /home/devuser -s /bin/bash "$user_name"
 fi
 
 mkdir -p /home/devuser/.composer /home/devuser/.npm
 
-if [ ! -f /home/devuser/.zshrc ] && [ -f /root/.zshrc ]; then
-    cp /root/.zshrc /home/devuser/.zshrc
+if [ ! -f /home/devuser/.bash_profile ] && [ -f /root/.bash_profile ]; then
+    cp /root/.bash_profile /home/devuser/.bash_profile
 fi
 
-if [ -d /opt/oh-my-zsh ] && [ ! -e /home/devuser/.oh-my-zsh ]; then
-    ln -s /opt/oh-my-zsh /home/devuser/.oh-my-zsh
+if [ ! -f /home/devuser/.bashrc ] && [ -f /root/.bashrc ]; then
+    cp /root/.bashrc /home/devuser/.bashrc
+fi
+
+if [ -f /root/.zshrc.local ]; then
+    cp /root/.zshrc.local /home/devuser/.zshrc.local
 fi
 
 chown -R "${target_uid}:${target_gid}" /home/devuser
@@ -57,7 +61,7 @@ export USER="$user_name"
 export COMPOSER_HOME=/home/devuser/.composer
 
 if [ "$#" -eq 0 ]; then
-    exec su-exec "${target_uid}:${target_gid}" /bin/zsh -l
+    exec su-exec "${target_uid}:${target_gid}" /bin/bash -l
 fi
 
 exec su-exec "${target_uid}:${target_gid}" "$@"

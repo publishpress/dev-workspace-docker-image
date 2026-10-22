@@ -1,86 +1,87 @@
 # syntax=docker/dockerfile:1.4
-# Stage: Build Dev Workspace
 FROM php:8.3-alpine
 
 ENV PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/root/.composer \
-    COMPOSER_VERSION=2.10.3 \
     PLUGIN_NAME="Generic" \
     PLUGIN_TYPE="FREE" \
+    STARSHIP_CONFIG=/etc/starship.toml \
     TERM=xterm-256color
 
-# Copy configuration files first (these change less frequently)
 COPY php-conf.d/error-logging.ini /usr/local/etc/php/conf.d/
 COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/
+COPY --from=composer:2.10.3 /usr/bin/composer /usr/local/bin/composer
 
-# Install dependencies and tools, clean up in a single layer
-# Using BuildKit cache mounts for faster rebuilds
 RUN --mount=type=cache,target=/var/cache/apk \
-    --mount=type=cache,target=/root/.npm \
     set -eux; \
-    apk update; \
-    apk upgrade; \
-    # Install build dependencies
-    apk add --no-cache --virtual .build-deps \
-        curl yaml-dev wget autoconf gcc g++ automake make \
-        linux-headers libstdc++ libzip-dev libintl coreutils iproute2 \
-        openssh patch util-linux libzip-dev icu-dev musl-libintl openssl-dev \
-        freetype-dev libjpeg-turbo-dev libpng-dev libcurl curl-dev; \
-    # Install runtime dependencies
     apk add --no-cache \
-        php-iconv php-pecl-yaml nodejs npm yarn bash rsync zsh gettext zip unzip \
-        git jq ncurses libpng libjpeg libzip libxml2 libmcrypt libcurl libwebp \
-        freetype yaml make 7zip ncurses bats github-cli su-exec; \
-    \
-    # Configure and install PHP extensions
-    docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
-    docker-php-ext-install zip intl gettext mysqli phar curl pdo_mysql gd; \
-    pecl channel-update pecl.php.net; \
+        7zip \
+        bash \
+        bats \
+        coreutils \
+        curl \
+        gettext \
+        git \
+        github-cli \
+        iproute2 \
+        jq \
+        make \
+        ncurses \
+        nodejs \
+        npm \
+        openssh-client-default \
+        patch \
+        rsync \
+        starship \
+        su-exec \
+        util-linux \
+        wget \
+        yarn \
+        zip \
+        unzip; \
+    apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        freetype-dev \
+        gettext-dev \
+        icu-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libzip-dev \
+        yaml-dev; \
+    docker-php-ext-configure gd --with-freetype --with-jpeg; \
+    docker-php-ext-install zip intl gettext mysqli pdo_mysql gd; \
     pecl install yaml; \
     docker-php-ext-enable yaml; \
-    \
-    # Install Composer
-    mkdir -p /root/.composer; \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}; \
+    runDeps="$( \
+        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
+            | tr ',' '\n' \
+            | sort -u \
+            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+    )"; \
+    apk add --no-cache --virtual .php-rundeps $runDeps; \
+    apk del --no-network .build-deps; \
+    mkdir -p /root/.composer /home/devuser /project; \
     composer --ansi --version --no-interaction; \
     composer diagnose || true; \
-    \
-    # Install WP-CLI
-    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
-    chmod +x wp-cli.phar; \
-    mv wp-cli.phar /usr/local/bin/wp; \
-    \
-    # Install cross-env (using npm cache mount)
+    curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+        -o /usr/local/bin/wp; \
+    chmod +x /usr/local/bin/wp; \
     npm i cross-env -g; \
-    \
-    # Install zsh
-    sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" -- \
-        -t ys -p git -p asdf -p wp-cli; \
-    mv /root/.oh-my-zsh /opt/oh-my-zsh; \
-    chmod -R a+rX /opt/oh-my-zsh; \
-    \
-    # Create dirs
-    mkdir -p /home/devuser /project; \
-    \
-    # Clean up
-    apk del --no-network --purge .build-deps; \
-    rm -rf /tmp/* /etc/lib/apk/db/scripts.tar || true; \
+    npm cache clean --force; \
+    rm -rf /tmp/*; \
     chmod 1777 /tmp
 
-# Copy scripts after system setup (these may change more frequently)
 COPY scripts/ /scripts/
 RUN find /scripts -type f -exec chmod +x {} +;
 
-# System config applies to every uid. A global config would live in /root
-# and be invisible after the entrypoint drops privileges.
 RUN git config --system --add safe.directory '*' || true
 
-# Copy custom .zshrc after zsh installation
-COPY root/.zshrc /root/.zshrc
+COPY root/.bash_profile /root/.bash_profile
+COPY root/.bashrc /root/.bashrc
+COPY root/starship.toml /etc/starship.toml
 
 ENV PATH="/project/node_modules/.bin:/project/vendor/bin:/project/lib/vendor/bin:/scripts:/scripts/deprecated-scripts:${PATH}"
-
 ENV INSIDE_DEV_CONTAINER=true
 
 VOLUME /project
