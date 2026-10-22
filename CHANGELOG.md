@@ -10,6 +10,8 @@
 - Changed: Removed duplicate PHP packages, unnecessary libraries, build-only dependencies, PHP CGI, PHPDBG, and PHP source files from the runtime image.
 - Changed: Replaced the full OpenSSH package with the client-only package.
 - Changed: Composer is copied from the pinned Composer 2.10.3 image.
+- Changed: Removed duplicate GD and ZIP extension builds from the WordPress image, reducing its size by 6.4 MB.
+- Changed: Pinned Composer 2.10.3 in the WP-CLI image and consolidated its setup layers.
 
 [7.0.0] - 20 Oct, 2026
 
