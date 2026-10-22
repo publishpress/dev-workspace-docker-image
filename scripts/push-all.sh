@@ -6,6 +6,7 @@ DIRECTORIES=(
     "base/generic"
     "base/node-18"
     "base/node-25"
+    "base/node-26"
     "workspaces/library-instance-protection"
     "workspaces/library-psr-container"
     "workspaces/library-publishpress-translator"

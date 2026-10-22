@@ -22,6 +22,53 @@ For pushing all the images in a row, you can run in the root dir:
 make push-all
 ```
 
+## Base images
+
+- `publishpress/dev-workspace-terminal:generic-8` - PHP development tools with Alpine Node.js.
+- `publishpress/dev-workspace-terminal:node-25` - Generic image with Node.js 25.
+- `publishpress/dev-workspace-terminal:node-26` - Generic image with Node.js 26.
+
+The Node.js images use Yarn Classic 1.22.22 by default and include Corepack for
+projects that use Yarn 4.
+
+### Using Yarn 4 in a project
+
+From the project directory, select the current stable Yarn release:
+
+```bash
+corepack use yarn@stable
+```
+
+This adds a `packageManager` field to `package.json`. Existing projects that
+expect a `node_modules` directory should also add:
+
+```yaml
+# .yarnrc.yml
+nodeLinker: node-modules
+```
+
+Then install dependencies and commit `package.json`, `yarn.lock`, and
+`.yarnrc.yml`:
+
+```bash
+yarn install
+```
+
+Projects without a `packageManager` field continue using Yarn Classic 1.22.22.
+
+For host-user mapping, pass `HOST_UID` and `HOST_GID` to the container instead
+of Docker's `--user` flag. The entrypoint transfers Corepack cache ownership
+before dropping privileges.
+
+### Building native Node.js addons
+
+The Node.js images include headers but omit the large compiler toolchain. Extend
+the image when a dependency must compile through `node-gyp`:
+
+```dockerfile
+RUN apk add --no-cache python3 build-base
+```
+
 ## Running
 
 To run the image, you can use the following command:

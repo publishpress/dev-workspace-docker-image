@@ -1,14 +1,15 @@
 # Changelog
 
-[Unreleased]
+[8.0.0] - 22 Oct, 2026
 
-- Added: Starship prompt with Bash as the default interactive shell.
-- Changed: Removed Zsh and Oh My Zsh while preserving legacy `.zshrc.local` workspace configuration.
+- Added: Node.js 26 image based on the optimized generic image.
+- Added: Corepack 0.36.0 to the Node.js 25 and 26 images, with Yarn 4 available per project while Yarn Classic 1.22.22 remains the default.
+- Added: Starship prompt with Bash as the default interactive shell (Zsh and Oh My Zsh removed; legacy `.zshrc.local` configuration still supported).
+- Changed: Rebuilt the Node.js 25 image without duplicate Node.js installations or cross-Alpine library overlays, reducing its size by 29.1%.
 - Changed: Rebuilt the generic image as a multi-stage PHP/Alpine image, reducing its size by 19.2% while retaining all development tools and PHP extensions.
 - Changed: Removed duplicate PHP packages, unnecessary libraries, build-only dependencies, PHP CGI, PHPDBG, and PHP source files from the runtime image.
 - Changed: Replaced the full OpenSSH package with the client-only package.
 - Changed: Composer is copied from the pinned Composer 2.10.3 image.
-- Fixed: Corrected Starship environment-variable rendering and hid the workspace version when unavailable.
 
 [7.0.0] - 20 Oct, 2026
 
