@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 # Stage: Build Dev Workspace
-FROM php:8.3-cli-alpine3.23
+FROM php:8.3-alpine
 
 ENV PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
