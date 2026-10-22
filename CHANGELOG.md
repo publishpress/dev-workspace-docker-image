@@ -4,9 +4,11 @@
 
 - Added: Starship prompt with Bash as the default interactive shell.
 - Changed: Removed Zsh and Oh My Zsh while preserving legacy `.zshrc.local` workspace configuration.
-- Changed: Reduced the generic image size by removing duplicate PHP packages, unnecessary libraries, and build-only dependencies.
+- Changed: Rebuilt the generic image as a multi-stage PHP/Alpine image, reducing its size by 19.2% while retaining all development tools and PHP extensions.
+- Changed: Removed duplicate PHP packages, unnecessary libraries, build-only dependencies, PHP CGI, PHPDBG, and PHP source files from the runtime image.
 - Changed: Replaced the full OpenSSH package with the client-only package.
 - Changed: Composer is copied from the pinned Composer 2.10.3 image.
+- Fixed: Corrected Starship environment-variable rendering and hid the workspace version when unavailable.
 
 [7.0.0] - 20 Oct, 2026
 

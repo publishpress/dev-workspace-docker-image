@@ -1,17 +1,38 @@
 # syntax=docker/dockerfile:1.4
-FROM php:8.3-alpine
+FROM php:8.3-cli-alpine3.24 AS php-builder
+
+RUN --mount=type=cache,target=/var/cache/apk \
+    set -eux; \
+    apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        freetype-dev \
+        gettext-dev \
+        icu-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libzip-dev \
+        yaml-dev; \
+    docker-php-ext-configure gd --with-freetype --with-jpeg; \
+    docker-php-ext-install zip intl gettext mysqli pdo_mysql gd; \
+    pecl install yaml; \
+    docker-php-ext-enable yaml; \
+    rm -f /usr/local/bin/php-cgi /usr/local/bin/phpdbg
+
+FROM alpine:3.24
 
 ENV PROJECT_PATH=/project \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/root/.composer \
+    PHP_INI_DIR=/usr/local/etc/php \
     PLUGIN_NAME="Generic" \
     PLUGIN_TYPE="FREE" \
     STARSHIP_CONFIG=/etc/starship.toml \
     TERM=xterm-256color
 
+COPY --from=php-builder /usr/local/ /usr/local/
+COPY --from=composer:2.10.3 /usr/bin/composer /usr/local/bin/composer
 COPY php-conf.d/error-logging.ini /usr/local/etc/php/conf.d/
 COPY php-conf.d/php-cli.ini /usr/local/etc/php/conf.d/
-COPY --from=composer:2.10.3 /usr/bin/composer /usr/local/bin/composer
 
 RUN --mount=type=cache,target=/var/cache/apk \
     set -eux; \
@@ -40,27 +61,15 @@ RUN --mount=type=cache,target=/var/cache/apk \
         yarn \
         zip \
         unzip; \
-    apk add --no-cache --virtual .build-deps \
-        $PHPIZE_DEPS \
-        freetype-dev \
-        gettext-dev \
-        icu-dev \
-        libjpeg-turbo-dev \
-        libpng-dev \
-        libzip-dev \
-        yaml-dev; \
-    docker-php-ext-configure gd --with-freetype --with-jpeg; \
-    docker-php-ext-install zip intl gettext mysqli pdo_mysql gd; \
-    pecl install yaml; \
-    docker-php-ext-enable yaml; \
+    apk add --no-cache --virtual .scan-deps pax-utils; \
     runDeps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
+        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )"; \
     apk add --no-cache --virtual .php-rundeps $runDeps; \
-    apk del --no-network .build-deps; \
+    apk del --no-network .scan-deps; \
     mkdir -p /root/.composer /home/devuser /project; \
     composer --ansi --version --no-interaction; \
     composer diagnose || true; \
