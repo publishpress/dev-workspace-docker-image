@@ -25,8 +25,10 @@ make push-all
 ## Base images
 
 - `publishpress/dev-workspace-terminal:generic-8` - PHP development tools with Alpine Node.js.
+- `publishpress/dev-workspace-terminal:generic-debian` - Same tools on Debian Trixie, based on `php:8.3-zts`.
 - `publishpress/dev-workspace-terminal:node-25` - Generic image with Node.js 25.
 - `publishpress/dev-workspace-terminal:node-26` - Generic image with Node.js 26.
+- `publishpress/dev-workspace-terminal:node-26-debian` - Debian generic image with Node.js 26.
 
 The Node.js images use Yarn Classic 1.22.22 by default and include Corepack for
 projects that use Yarn 4.
@@ -67,6 +69,14 @@ the image when a dependency must compile through `node-gyp`:
 
 ```dockerfile
 RUN apk add --no-cache python3 build-base
+```
+
+On the Debian images:
+
+```dockerfile
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 build-essential \
+    && rm -rf /var/lib/apt/lists/*
 ```
 
 ## Running

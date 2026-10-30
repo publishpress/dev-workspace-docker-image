@@ -1,5 +1,10 @@
 # Changelog
 
+[8.1.0] - 30 Oct, 2026
+
+- Added: Debian generic image (`generic-debian`) based on `php:8.3-zts` (Trixie), with the same PHP extensions and development tools as the Alpine generic image.
+- Added: Node.js 26 Debian image (`node-26-debian`) based on `generic-debian`, using the official Node.js 26 Trixie build.
+
 [8.0.0] - 22 Oct, 2026
 
 - Added: Node.js 26 image based on the optimized generic image.
