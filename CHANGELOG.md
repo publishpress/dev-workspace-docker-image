@@ -2,8 +2,13 @@
 
 [8.1.0] - 30 Oct, 2026
 
-- Added: Debian generic image (`generic-debian`) based on `php:8.3-zts` (Trixie), with the same PHP extensions and development tools as the Alpine generic image.
-- Added: Node.js 26 Debian image (`node-26-debian`) based on `generic-debian`, using the official Node.js 26 Trixie build.
+- Added: Debian generic image `publishpress/dev-workspace-terminal:generic-debian`, based on `php:8.3-zts` (Debian Trixie). The tag has no version number.
+- Added: The same PHP extensions as the Alpine generic image (gd, intl, gettext, mysqli, pdo_mysql, zip, and yaml 2.3.0), plus Composer 2.10.3, WP-CLI, Git, GitHub CLI, and Starship.
+- Added: Node.js 26 Debian image `publishpress/dev-workspace-terminal:node-26-debian`, based on `generic-debian`, with Corepack 0.36.0 and Yarn Classic 1.22.22 as the default.
+- Added: The Debian images drop root to the `/project` owner, or to `HOST_UID`/`HOST_GID`, using `gosu`.
+- Changed: Built the Debian generic image in multiple stages. PHP is compiled on `php:8.3-zts` and copied onto `debian:trixie-slim` with only the shared libraries it needs. PHP CGI, PHPDBG, and the embed library are omitted.
+- Changed: Installed the yaml extension from the GitHub 2.3.0 source archive instead of PECL.
+- Changed: Shipped official Node.js 20 in `generic-debian`. `node-26-debian` replaces it with the official Node.js 26 Trixie build.
 
 [8.0.0] - 22 Oct, 2026
 
