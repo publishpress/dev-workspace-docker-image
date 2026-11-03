@@ -5,7 +5,7 @@ IMAGE_TAG := node-${NODE_VERSION}
 
 include ../../make/docker.mk
 
-.PHONY: help build build-local push bootstrap-buildx
+.PHONY: help build build-local push bootstrap-buildx run
 
 all: help
 
@@ -15,6 +15,13 @@ endef
 
 define push
 	$(call docker_push)
+endef
+
+define run
+	docker run --rm -it \
+		-e HOST_UID="$$(id -u)" \
+		-e HOST_GID="$$(id -g)" \
+		$(IMAGE_NAME):$(IMAGE_TAG) $(CMD)
 endef
 
 help:
@@ -31,3 +38,7 @@ build: ## Build the Docker image
 push: ## Push the Docker image to the registry
 	@echo "Pushing the image..."
 	@$(call push)
+
+run: ## Run a shell in the image. Override with CMD="node -v"
+	@echo "Running the image..."
+	@$(call run)

@@ -1,32 +1,23 @@
 SHELL := /bin/bash
 IMAGE_NAME := publishpress/dev-workspace-terminal
-FULL_VERSION := $(shell grep "image:" compose.yaml | head -n 1 | sed -E 's/.*:generic-([0-9]+\.[0-9]+\.[0-9]+)$$/\1/')
-MAJOR_VERSION := $(shell echo $(FULL_VERSION) | cut -d. -f1)
-MINOR_VERSION := $(shell echo $(FULL_VERSION) | cut -d. -f2)
-IMAGE_TAG_FULL := generic-$(FULL_VERSION)
-IMAGE_TAG_MAJOR := generic-$(MAJOR_VERSION)
-IMAGE_TAG_MINOR := generic-$(MINOR_VERSION)
+IMAGE_TAG := generic
 
 include ../../make/docker.mk
 
-.PHONY: help build build-provenance push bootstrap bootstrap-buildx slim version
+.PHONY: help build build-provenance push bootstrap bootstrap-buildx slim
 
 all: help
 
 define build
 	docker compose -f compose.yaml build
-	docker tag ${IMAGE_NAME}:${IMAGE_TAG_FULL} ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}
-	docker tag ${IMAGE_NAME}:${IMAGE_TAG_FULL} ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}.${MINOR_VERSION}
 endef
 
 define push
 	$(call ensure_buildx_builder)
 	docker buildx build --builder $(BUILDX_BUILDER) --platform $(PLATFORMS) --provenance=mode=max --push \
-		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache \
-		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache,mode=max \
-		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR} \
-		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}.${MINOR_VERSION} \
-		-t ${IMAGE_NAME}:${IMAGE_TAG_FULL} .
+		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache-generic \
+		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache-generic,mode=max \
+		-t ${IMAGE_NAME}:${IMAGE_TAG} .
 endef
 
 define bootstrap
@@ -48,11 +39,9 @@ build-provenance: ## Build the Docker image with provenance attestations
 	@echo "Building the image with provenance attestations..."
 	$(call ensure_buildx_builder)
 	docker buildx build --builder $(BUILDX_BUILDER) --platform $(PLATFORMS) --provenance=mode=max \
-		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache \
-		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache,mode=max \
-		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR} \
-		-t ${IMAGE_NAME}:${IMAGE_TAG_MAJOR}.${MINOR_VERSION} \
-		-t ${IMAGE_NAME}:${IMAGE_TAG_FULL} .
+		--cache-from type=registry,ref=${IMAGE_NAME}:buildcache-generic \
+		--cache-to type=registry,ref=${IMAGE_NAME}:buildcache-generic,mode=max \
+		-t ${IMAGE_NAME}:${IMAGE_TAG} .
 	@echo "Image built with provenance attestations successfully!"
 
 push: ## Push the Docker image to the registry
@@ -66,9 +55,6 @@ bootstrap: ## Install required tools
 
 slim: ## Create a slim version of the Docker image
 	@docker-slim build \
-		--target ${IMAGE_NAME}:${IMAGE_TAG_FULL} \
-		--tag ${IMAGE_NAME}:slim-${IMAGE_TAG_FULL} \
+		--target ${IMAGE_NAME}:${IMAGE_TAG} \
+		--tag ${IMAGE_NAME}:slim-${IMAGE_TAG} \
 		--http-probe=false
-
-version: ## Display the current version
-	@echo $(FULL_VERSION)

@@ -31,13 +31,18 @@ fi
 user_name=$(awk -F: -v uid="$target_uid" '$3 == uid { print $1; exit }' /etc/passwd)
 
 if [ -z "$user_name" ]; then
-    group_name=$(awk -F: -v gid="$target_gid" '$3 == gid { print $1; exit }' /etc/group)
-    if [ -z "$group_name" ]; then
-        group_name=devuser
-        addgroup -g "$target_gid" "$group_name"
+    if ! awk -F: -v gid="$target_gid" '$3 == gid { found = 1; exit } END { exit !found }' /etc/group; then
+        groupadd --gid "$target_gid" devuser
     fi
+    group_name=$(awk -F: -v gid="$target_gid" '$3 == gid { print $1; exit }' /etc/group)
     user_name=devuser
-    adduser -D -u "$target_uid" -G "$group_name" -h /home/devuser -s /bin/bash "$user_name"
+    useradd \
+        --uid "$target_uid" \
+        --gid "$group_name" \
+        --home-dir /home/devuser \
+        --shell /bin/bash \
+        --no-create-home \
+        "$user_name"
 fi
 
 mkdir -p /home/devuser/.composer /home/devuser/.npm
@@ -61,7 +66,7 @@ export USER="$user_name"
 export COMPOSER_HOME=/home/devuser/.composer
 
 if [ "$#" -eq 0 ]; then
-    exec su-exec "${target_uid}:${target_gid}" /bin/bash -l
+    exec gosu "${target_uid}:${target_gid}" /bin/bash -l
 fi
 
-exec su-exec "${target_uid}:${target_gid}" "$@"
+exec gosu "${target_uid}:${target_gid}" "$@"

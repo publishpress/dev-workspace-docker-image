@@ -1,5 +1,13 @@
 # Changelog
 
+[8.2.0] - 3 Nov, 2026
+
+- Changed: `generic` is the Debian Trixie image, tagged `publishpress/dev-workspace-terminal:generic`. It replaces both the Alpine `generic-8` build and `generic-debian`.
+- Changed: `node-26` is the Debian image, based on `generic`. It replaces the Alpine `node-26` build and `node-26-debian`.
+- Removed: GitHub CLI from `generic`. It was unused and linked Go 1.23.4 (CVE-2025-68121).
+- Added: `make run` for the Node.js 26 image.
+- Removed: tags `generic-debian` and `node-26-debian`. `node-25` and `node-18` still use the previously published Alpine tags `generic-8` and `generic-5`.
+
 [8.1.0] - 30 Oct, 2026
 
 - Added: Debian generic image `publishpress/dev-workspace-terminal:generic-debian`, based on `php:8.3-zts` (Debian Trixie). The tag has no version number.
