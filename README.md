@@ -25,8 +25,8 @@ make push-all
 ## Base images
 
 - `publishpress/dev-workspace-terminal:generic` - PHP development tools on Debian Trixie, based on `php:8.3-zts`.
-- `publishpress/dev-workspace-terminal:node-25` - Alpine generic image with Node.js 25. Still based on the last published `generic-8`.
-- `publishpress/dev-workspace-terminal:node-26` - Debian generic image with Node.js 26.
+- `publishpress/dev-workspace-terminal:node-25` - Alpine image with Node.js 25, kept for MetaSlider. Node 25 has no fix for CVE-2026-111497.
+- `publishpress/dev-workspace-terminal:node-26` - Debian generic image with Node.js 26. Workspace images use this tag.
 
 The Node.js images use Yarn Classic 1.22.22 by default and include Corepack for
 projects that use Yarn 4.

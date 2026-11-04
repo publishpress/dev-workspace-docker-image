@@ -1,5 +1,10 @@
 # Changelog
 
+[8.2.1] - 4 Nov, 2026
+
+- Changed: Workspace images now use `publishpress/dev-workspace-terminal:node-26` instead of `node-25`.
+- Kept: `node-25` for MetaSlider. Node 25 is end of life and has no CVE-2026-111497 fix.
+
 [8.2.0] - 3 Nov, 2026
 
 - Changed: `generic` is the Debian Trixie image, tagged `publishpress/dev-workspace-terminal:generic`. It replaces both the Alpine `generic-8` build and `generic-debian`.
